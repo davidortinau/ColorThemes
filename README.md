@@ -2,7 +2,9 @@
 
 A delightful cross-platform application for generating beautiful, consistent color themes for your .NET MAUI apps.
 
-![.NET MAUI Color Themes Generator](https://aka.ms/maui-logo.png)
+## !!! WORK IN PROGRESS !!!
+
+![.NET MAUI Color Themes Generator](images/color-themes.png)
 
 ## 🎨 What is this?
 
