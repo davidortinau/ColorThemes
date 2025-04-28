@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:dotnet_colorthemes"
              x:Class="dotnet_colorthemes.MainPage"
              BackgroundColor="{DynamicResource Background}">
+
+    <ContentPage.Resources>
+        <local:ColorToHexConverter x:Key="ColorToHexConverter" />
+    </ContentPage.Resources>
 
     <ScrollView>
     <VerticalStackLayout Padding="20" Spacing="24">
@@ -59,9 +64,117 @@
       <!-- Borders &amp; Focus Outline Preview -->
       <Label Text="Borders &amp; Focus" FontSize="20" TextColor="{DynamicResource Secondary}" />      <Border Stroke="{DynamicResource Border}" StrokeShape="RoundRectangle 4" Padding="8">
         <Label Text="Border token" TextColor="{DynamicResource OnBackground}" />
-      </Border>
+      </Border>      <!-- Color Swatches -->
+      <Label Text="Color Swatches" FontSize="20" TextColor="{DynamicResource Secondary}" Margin="0,24,0,0" />
+      <Grid x:Name="ColorSwatchesGrid" 
+          ColumnDefinitions="*,*,*" 
+          ColumnSpacing="12" 
+          RowDefinitions="Auto,Auto,Auto,Auto"
+          RowSpacing="12">
+        <!-- Color swatches will be created dynamically in code -->
+        <Border Grid.Row="0" Grid.Column="0" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Primary" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="PrimaryColorBox" 
+                  Grid.Row="1" 
+                  Color="{DynamicResource Primary}" 
+                  HeightRequest="50" Margin="0,4" />
+                <Label x:Name="PrimaryHexLabel" Grid.Row="2" 
+                       FontSize="10" HorizontalOptions="Center" 
+                       TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+          <Border Grid.Row="0" Grid.Column="1" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Secondary" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="SecondaryColorBox" Grid.Row="1" Color="{DynamicResource Secondary}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="SecondaryHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="0" Grid.Column="2" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Tertiary" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="TertiaryColorBox" Grid.Row="1" Color="{DynamicResource Tertiary}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="TertiaryHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
 
-      <!-- Theme XAML Output -->
+        <!-- Surface Colors -->
+        <Border Grid.Row="1" Grid.Column="0" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Surface0" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="Surface0ColorBox" Grid.Row="1" Color="{DynamicResource Surface0}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="Surface0HexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="1" Grid.Column="1" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Surface1" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="Surface1ColorBox" Grid.Row="1" Color="{DynamicResource Surface1}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="Surface1HexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="1" Grid.Column="2" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Surface2" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="Surface2ColorBox" Grid.Row="1" Color="{DynamicResource Surface2}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="Surface2HexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <!-- Feedback Colors -->
+        <Border Grid.Row="2" Grid.Column="0" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Error" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="ErrorColorBox" Grid.Row="1" Color="{DynamicResource Error}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="ErrorHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="2" Grid.Column="1" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Success" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="SuccessColorBox" Grid.Row="1" Color="{DynamicResource Success}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="SuccessHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="2" Grid.Column="2" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Info" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="InfoColorBox" Grid.Row="1" Color="{DynamicResource Info}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="InfoHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <!-- Additional Colors -->
+        <Border Grid.Row="3" Grid.Column="0" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="Background" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="BackgroundColorBox" Grid.Row="1" Color="{DynamicResource Background}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="BackgroundHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="3" Grid.Column="1" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="OnBackground" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="OnBackgroundColorBox" Grid.Row="1" Color="{DynamicResource OnBackground}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="OnBackgroundHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="3" Grid.Column="2" StrokeShape="RoundRectangle 4" Padding="8" Stroke="{DynamicResource Border}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <Label Text="OnSurface" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+                <BoxView x:Name="OnSurfaceColorBox" Grid.Row="1" Color="{DynamicResource OnSurface}" HeightRequest="50" Margin="0,4" />
+                <Label x:Name="OnSurfaceHexLabel" Grid.Row="2" FontSize="10" HorizontalOptions="Center" TextColor="{DynamicResource OnBackground}" />
+            </Grid>
+        </Border>
+      </Grid><!-- Theme XAML Output -->
       <Label Text="Theme as XAML" FontSize="20" TextColor="{DynamicResource Secondary}" Margin="0,24,0,0" />
       <Button x:Name="GenerateXamlButton" 
               Text="Generate XAML" 

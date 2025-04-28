@@ -16,7 +16,7 @@ namespace Theming
         /// <param name="theme">The ColorTheme to convert to XAML</param>
         /// <param name="resourceDictionaryName">Optional name for the ResourceDictionary</param>
         /// <returns>A string containing the XAML representation of the theme</returns>
-        public static string ToXaml(this ColorTheme theme, string resourceDictionaryName = "ThemeColors")
+        public static string ToExtXaml(this ColorTheme theme, string resourceDictionaryName = "ThemeColors")
         {
             var sb = new StringBuilder();
             
