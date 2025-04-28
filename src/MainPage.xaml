@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="dotnet_colorthemes.MainPage"
+             BackgroundColor="{DynamicResource Background}">
+
+    <ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="24">
+
+      <!-- Surfaces -->
+      <Label Text="Surfaces" FontSize="20" TextColor="{DynamicResource Secondary}" />
+      <Border Background="{DynamicResource Surface0}" Padding="12">
+        <Label Text="Surface0" TextColor="{DynamicResource OnSurface}" />
+      </Border>
+      <Border Background="{DynamicResource Surface1}" Padding="12">
+        <Label Text="Surface1" TextColor="{DynamicResource OnSurface}" />
+      </Border>
+      <Border Background="{DynamicResource Surface2}" Padding="12">
+        <Label Text="Surface2" TextColor="{DynamicResource OnSurface}" />
+      </Border>
+      <Border Background="{DynamicResource Surface3}" Padding="12">
+        <Label Text="Surface3" TextColor="{DynamicResource OnSurface}" />
+      </Border>
+
+      <!-- Buttons -->
+      <Label Text="Buttons" FontSize="20" TextColor="{DynamicResource Secondary}" />
+      <HorizontalStackLayout Spacing="16">
+        <Button Text="Primary" BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource OnPrimary}" />
+        <Button Text="Disabled" IsEnabled="False" BackgroundColor="{DynamicResource PrimaryDisabled}" TextColor="{DynamicResource OnPrimary}" />
+      </HorizontalStackLayout>
+      <HorizontalStackLayout Spacing="16">
+        <Button Text="Hover Preview" BackgroundColor="{DynamicResource PrimaryHover}" TextColor="{DynamicResource OnPrimary}" />
+        <Button Text="Pressed Preview" BackgroundColor="{DynamicResource PrimaryPressed}" TextColor="{DynamicResource OnPrimary}" />
+      </HorizontalStackLayout>
+
+      <!-- Text and Entry -->
+      <Label Text="Text &amp; Entry" FontSize="20" TextColor="{DynamicResource Secondary}" />
+      <Entry Placeholder="Placeholder" TextColor="{DynamicResource OnBackground}" PlaceholderColor="{DynamicResource Surface1}" />
+      <Editor Text="Multiline text" TextColor="{DynamicResource OnBackground}" />
+
+      <!-- Progress &amp; Slider -->
+      <Label Text="ProgressBar &amp; Slider" FontSize="20" TextColor="{DynamicResource Secondary}" />
+      <ProgressBar Progress="0.6" ProgressColor="{DynamicResource Primary}" />
+      <Slider Minimum="0" Maximum="100" Value="50" MinimumTrackColor="{DynamicResource Primary}" MaximumTrackColor="{DynamicResource Surface1}" ThumbColor="{DynamicResource Primary}" />
+
+      <!-- Switch &amp; CheckBox -->
+      <Label Text="Switch &amp; CheckBox" FontSize="20" TextColor="{DynamicResource Secondary}" />
+      <Switch IsToggled="True" OnColor="{DynamicResource Primary}" ThumbColor="{DynamicResource OnPrimary}" />
+      <CheckBox IsChecked="True" Color="{DynamicResource Primary}" />
+
+      <!-- Feedback Colors -->
+      <Label Text="Feedback Colors" FontSize="20" TextColor="{DynamicResource Secondary}" />
+      <StackLayout Orientation="Horizontal" Spacing="16">
+        <Border BackgroundColor="{DynamicResource Error}" Padding="8"><Label Text="Error" TextColor="White" /></Border>
+        <Border BackgroundColor="{DynamicResource Success}" Padding="8"><Label Text="Success" TextColor="White" /></Border>
+        <Border BackgroundColor="{DynamicResource Info}" Padding="8"><Label Text="Info" TextColor="White" /></Border>
+      </StackLayout>
+
+      <!-- Borders &amp; Focus Outline Preview -->
+      <Label Text="Borders &amp; Focus" FontSize="20" TextColor="{DynamicResource Secondary}" />      <Border Stroke="{DynamicResource Border}" StrokeShape="RoundRectangle 4" Padding="8">
+        <Label Text="Border token" TextColor="{DynamicResource OnBackground}" />
+      </Border>
+
+      <!-- Theme XAML Output -->
+      <Label Text="Theme as XAML" FontSize="20" TextColor="{DynamicResource Secondary}" Margin="0,24,0,0" />
+      <Button x:Name="GenerateXamlButton" 
+              Text="Generate XAML" 
+              Clicked="GenerateXamlButton_Clicked"
+              BackgroundColor="{DynamicResource Primary}"
+              TextColor="{DynamicResource OnPrimary}" />
+      <Editor x:Name="ThemeXamlEditor" 
+              HeightRequest="200" 
+              IsReadOnly="True" 
+              BackgroundColor="{DynamicResource Surface0}"
+              TextColor="{DynamicResource OnBackground}" />
+      <Button x:Name="SaveXamlButton" 
+              Text="Save XAML to File" 
+              Clicked="SaveXamlButton_Clicked"
+              BackgroundColor="{DynamicResource Secondary}"
+              TextColor="{DynamicResource OnSecondary}"
+              IsEnabled="False" />
+      
+      <Button Text="Toggle Theme" Clicked="Button_Clicked" Margin="0,24,0,0" />
+
+    </VerticalStackLayout>
+  </ScrollView>
+
+</ContentPage>
