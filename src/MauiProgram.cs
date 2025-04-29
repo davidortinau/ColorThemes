@@ -2,8 +2,10 @@
 using CommunityToolkit.Maui;
 using Syncfusion.Maui.Toolkit.Hosting;
 using Fonts;
+using ColorThemes.Repositories;
+using ColorThemes.PageModels;
 
-namespace dotnet_colorthemes;
+namespace ColorThemes;
 
 public static class MauiProgram
 {
@@ -20,6 +22,11 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
 			});
+			
+		// Register services
+		builder.Services.AddSingleton<ThemeRepository>();
+		builder.Services.AddTransient<MainPageModel>();
+		builder.Services.AddTransient<MainPage>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:dotnet_colorthemes"
+             xmlns:local="clr-namespace:ColorThemes"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
-             x:Class="dotnet_colorthemes.MainPage"
+             xmlns:expander="clr-namespace:Syncfusion.Maui.Toolkit.Expander;assembly=Syncfusion.Maui.Toolkit"
+             xmlns:Models="clr-namespace:ColorThemes.Models"
+             xmlns:PageModels="clr-namespace:ColorThemes.PageModels"
+             x:DataType="PageModels:MainPageModel"
+             x:Class="ColorThemes.MainPage"
              BackgroundColor="{DynamicResource Background}"
              Title="Color Theme Generator">
 
@@ -23,12 +27,18 @@
                 ColumnSpacing="12"
                 RowSpacing="12"
                 ColumnDefinitions="Auto,*,30,*"
-                RowDefinitions="Auto,Auto,Auto,Auto">
-                <Label Text="Primary"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <Label Text="Title"
+                  VerticalOptions="Center"
                        Grid.Column="0"/>
+                <Entry Text="{Binding SelectedTheme.Title}"
+                       Grid.Column="1"/>
+                <Label Text="Primary"
+                  VerticalOptions="Center"
+                       Grid.Column="0" Grid.Row="1"/>
                 <Entry
-                  Grid.Column="1"
-                  Text="{x:Static local:App.Primary}"
+                  Grid.Column="1" Grid.Row="1"
+                  Text="{Binding SelectedTheme.PrimaryHex}"
                   x:Name="PrimaryColorEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
@@ -37,18 +47,20 @@
                       RegexPattern="^#(?:[0-9a-fA-F]{3}){1,2}$"/>
                   </Entry.Behaviors>
                 </Entry>
-                <BoxView HeightRequest="30"
+                <Border HeightRequest="30"
                          WidthRequest="30"
                          VerticalOptions="Center"
-                         Color="{Binding Text, Source={x:Reference PrimaryColorEntry}, x:DataType=Entry}"
-                         Grid.Column="2"/>
+                         BackgroundColor="{Binding Text, Source={x:Reference PrimaryColorEntry}, x:DataType=Entry}"
+                         Stroke="{DynamicResource OnBackground}"
+                         StrokeThickness="1"
+                         Grid.Column="2"  Grid.Row="1"/>
 
                 <Label Text="Secondary"
+                  VerticalOptions="Center"
                        Grid.Column="0"
-                       Grid.Row="1"/>
-                <Entry Text="{x:Static local:App.Secondary}"
-                       Grid.Column="1"
-                       Grid.Row="1"
+                       Grid.Row="2"/>
+                <Entry Text="{Binding SelectedTheme.SecondaryHex}"
+                       Grid.Column="1" Grid.Row="2"
                        x:Name="SecondaryColorEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
@@ -57,19 +69,22 @@
                       RegexPattern="^#(?:[0-9a-fA-F]{3}){1,2}$"/>
                   </Entry.Behaviors>
                 </Entry>
-                <BoxView HeightRequest="30"
+                <Border HeightRequest="30"
                          WidthRequest="30"
                          VerticalOptions="Center"
-                         Color="{Binding Text, Source={x:Reference SecondaryColorEntry}, x:DataType=Entry}"
+                         BackgroundColor="{Binding Text, Source={x:Reference SecondaryColorEntry}, x:DataType=Entry}"
+                         Stroke="{DynamicResource OnBackground}"
+                         StrokeThickness="1"
                          Grid.Column="2"
-                         Grid.Row="1"/>
+                         Grid.Row="2"/>
 
                 <Label Text="Light Background"
+                  VerticalOptions="Center"
                        Grid.Column="0"
-                       Grid.Row="2"/>
-                <Entry Text="{x:Static local:App.LightBackground}"
+                       Grid.Row="3"/>
+                <Entry Text="{Binding SelectedTheme.BackgroundHex}"
                        Grid.Column="1"
-                       Grid.Row="2"
+                       Grid.Row="3"
                        x:Name="LightBackgroundColorEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
@@ -78,19 +93,22 @@
                       RegexPattern="^#(?:[0-9a-fA-F]{3}){1,2}$"/>
                   </Entry.Behaviors>
                 </Entry>
-                <BoxView HeightRequest="30"
+                <Border HeightRequest="30"
                          WidthRequest="30"
                          VerticalOptions="Center"
-                         Color="{Binding Text, Source={x:Reference LightBackgroundColorEntry}, x:DataType=Entry}"
+                         BackgroundColor="{Binding Text, Source={x:Reference LightBackgroundColorEntry}, x:DataType=Entry}"
+                         Stroke="{DynamicResource OnBackground}"
+                         StrokeThickness="1"
                          Grid.Column="2"
-                         Grid.Row="2"/>
+                         Grid.Row="3"/>
 
                 <Label Text="Dark Background"
+                      VerticalOptions="Center"
                        Grid.Column="0"
-                       Grid.Row="3"/>
-                <Entry Text="{x:Static local:App.DarkBackground}"
+                       Grid.Row="4"/>
+                <Entry Text="{Binding SelectedTheme.BackgroundDarkHex}"
                        Grid.Column="1"
-                       Grid.Row="3"
+                       Grid.Row="4"
                        x:Name="DarkBackgroundColorEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
@@ -99,17 +117,87 @@
                       RegexPattern="^#(?:[0-9a-fA-F]{3}){1,2}$"/>
                   </Entry.Behaviors>
                 </Entry>
-                <BoxView HeightRequest="30"
+                <Border HeightRequest="30"
                          WidthRequest="30"
                          VerticalOptions="Center"
-                         Color="{Binding Text, Source={x:Reference DarkBackgroundColorEntry}, x:DataType=Entry}"
+                         BackgroundColor="{Binding Text, Source={x:Reference DarkBackgroundColorEntry}, x:DataType=Entry}"
+                         Stroke="{DynamicResource OnBackground}"
+                         StrokeThickness="1"
                          Grid.Column="2"
-                         Grid.Row="3"/>
+                         Grid.Row="4"/>
               </Grid>
 
-              <Button Text="Apply Colors"
+              <HorizontalStackLayout Spacing="12">
+                <Button Text="Apply Colors"
                       x:Name="ApplyColorsButton"
                       Clicked="ApplyColorsButton_Clicked"/>
+                <Button Text="Save Theme" Command="{Binding SaveThemeCommand}" />
+              </HorizontalStackLayout>
+
+              
+
+              <expander:SfExpander HeaderIconPosition="None">
+                <expander:SfExpander.Header>
+                  <HorizontalStackLayout Spacing="8" Margin="8,12">
+                    <Image x:Name="Caret" Source="{StaticResource IconCaretRight}" WidthRequest="24" HeightRequest="24" VerticalOptions="Center"/>
+                    <Label Text="Theme Library" Style="{StaticResource SubHeadline}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                  </HorizontalStackLayout>
+                </expander:SfExpander.Header>
+
+                <expander:SfExpander.Content>
+                  <ScrollView Orientation="Horizontal">
+                    <HorizontalStackLayout Spacing="16" Padding="20,0"
+                      BindableLayout.ItemsSource="{Binding Themes}"
+                      >
+                      <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="Models:ColorTheme">
+                          <Grid ColumnDefinitions="Auto" RowDefinitions="Auto,100,Auto">
+                            <Grid.GestureRecognizers>
+                              <TapGestureRecognizer Command="{Binding LoadThemeCommand, Source={RelativeSource AncestorType={x:Type PageModels:MainPageModel}}, x:DataType=PageModels:MainPageModel}" CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
+                            <Label Text="{Binding Title}" Grid.Row="2" />
+                            <Border Stroke="{StaticResource Gray400}" StrokeThickness="1" Grid.Row="1">
+                              <Grid ColumnDefinitions="40,40,40,40" RowDefinitions="100">
+                                <BoxView Color="{Binding Primary}" Grid.Column="0" Grid.Row="0" />
+                                <BoxView Color="{Binding Secondary}" Grid.Column="1" Grid.Row="0" />
+                                <BoxView Color="{Binding Background}" Grid.Column="2" Grid.Row="0" />
+                                <BoxView Color="{Binding BackgroundDark}" Grid.Column="3" Grid.Row="0" />
+                                </Grid>
+                            </Border>
+                          </Grid>
+                        </DataTemplate>
+                      </BindableLayout.ItemTemplate>
+                      
+                    </HorizontalStackLayout>
+                  </ScrollView>
+                </expander:SfExpander.Content>
+
+                <VisualStateManager.VisualStateGroups>
+                      <VisualStateGroupList>
+                          <VisualStateGroup>
+                              <VisualState Name="Expanded">
+                                  <VisualState.Setters>
+                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretDown}"/>
+                                      
+                                  </VisualState.Setters>
+                              </VisualState>
+                              <VisualState Name="Collapsed">
+                                  <VisualState.Setters>
+                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretRight}"/>
+                                      
+                                  </VisualState.Setters>
+                              </VisualState>
+                              <VisualState Name="Normal">
+                                  <VisualState.Setters>
+                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretRight}"/>
+                                      <Setter Property="HeaderBackground" Value="#faf8f7"/>
+                                      <Setter Property="HeaderIconColor" Value="#000000"/>
+                                  </VisualState.Setters>
+                              </VisualState>
+                          </VisualStateGroup>
+                      </VisualStateGroupList>
+                  </VisualStateManager.VisualStateGroups>
+              </expander:SfExpander>
             </VerticalStackLayout>
           </ScrollView>
         </tabView:SfTabItem.Content>

@@ -2,8 +2,10 @@
 using System.Text;
 using Path = System.IO.Path;
 using Scriban;
+using ColorThemes.Models;
+using ColorThemes.PageModels;
 
-namespace dotnet_colorthemes;
+namespace ColorThemes;
 
 /// <summary>
 /// Represents the available code generation formats for color themes
@@ -19,15 +21,30 @@ public enum CodeGenerationFormat
 
 public partial class MainPage : ContentPage
 {
+    private readonly MainPageModel _viewModel;
     private ColorTheme? _currentTheme;
-      public MainPage()
+    
+    public MainPage(MainPageModel viewModel)
     {
         InitializeComponent();
-
+        
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
+        
+        // Initialize the color format picker
+        CodeFormatPicker.ItemsSource = new List<string>
+        {
+            "AppThemeColor",
+            "AppThemeBinding",
+            "DynamicResource",
+            "MauiReactor"
+        };
+        CodeFormatPicker.SelectedIndex = 0;
+        
         // Add a handler to update the color hex values when the app theme changes
         if (Application.Current != null)
             Application.Current.RequestedThemeChanged += (s, e) => UpdateColorSwatches();
-
+            
         UpdateColorSwatches();
     }
     

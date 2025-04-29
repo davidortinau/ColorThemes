@@ -2,6 +2,7 @@
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Controls;
 using System.Text;
+using ColorThemes.Models;
 
 namespace Theming
 {

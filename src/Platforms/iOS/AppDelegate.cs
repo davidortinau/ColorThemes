@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace dotnet_colorthemes;
+namespace ColorThemes;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

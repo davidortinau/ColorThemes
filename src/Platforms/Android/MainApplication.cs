@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace dotnet_colorthemes;
+namespace ColorThemes;
 
 [Application]
 public class MainApplication : MauiApplication

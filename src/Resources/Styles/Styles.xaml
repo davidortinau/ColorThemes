@@ -251,5 +251,17 @@
         Glyph="{x:Static f:FluentUI.copy_32_regular}"
         Size="24" 
         Color="{DynamicResource OnBackground}" />
+    
+    <FontImageSource x:Key="IconCaretRight"
+        FontFamily="{x:Static f:FluentUI.FontFamily}"
+        Glyph="{x:Static f:FluentUI.caret_right_24_regular}"
+        Size="24" 
+        Color="{DynamicResource OnBackground}" />
+
+    <FontImageSource x:Key="IconCaretDown"
+        FontFamily="{x:Static f:FluentUI.FontFamily}"
+        Glyph="{x:Static f:FluentUI.caret_down_24_regular}"
+        Size="24" 
+        Color="{DynamicResource OnBackground}" />
 
 </ResourceDictionary>

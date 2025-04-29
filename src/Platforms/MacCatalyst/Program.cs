@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace dotnet_colorthemes;
+namespace ColorThemes;
 
 public class Program
 {

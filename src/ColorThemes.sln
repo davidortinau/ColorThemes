@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-colorthemes", "dotnet-colorthemes.csproj", "{BC0B6EBA-64D1-DDB9-52D0-B198B50971BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorThemes", "ColorThemes.csproj", "{BC0B6EBA-64D1-DDB9-52D0-B198B50971BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
