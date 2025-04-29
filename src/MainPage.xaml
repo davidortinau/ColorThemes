@@ -9,10 +9,6 @@
              BackgroundColor="{DynamicResource Background}"
              Title="Color Theme Generator">
 
-  <ContentPage.Resources>
-    <local:ColorToHexConverter x:Key="ColorToHexConverter"/>
-  </ContentPage.Resources>
-
   <tabView:SfTabView x:Name="tabView">
     <tabView:SfTabView.Items>
       <tabView:SfTabItem Header="Configure">
