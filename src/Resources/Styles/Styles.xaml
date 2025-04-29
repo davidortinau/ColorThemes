@@ -2,7 +2,8 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:f="clr-namespace:Fonts">
 
     <!-- ActivityIndicator -->
     <Style TargetType="ActivityIndicator">
@@ -244,5 +245,11 @@
         <Setter Property="UnselectedTabColor" Value="{DynamicResource Surface1}" />
         <Setter Property="SelectedTabColor" Value="{DynamicResource Primary}" />
     </Style>
+
+    <FontImageSource x:Key="IconCopy"
+        FontFamily="{x:Static f:FluentUI.FontFamily}"
+        Glyph="{x:Static f:FluentUI.copy_32_regular}"
+        Size="24" 
+        Color="{DynamicResource OnBackground}" />
 
 </ResourceDictionary>

@@ -16,8 +16,7 @@
         Spacing="24">
 
       <Label Text="Choose your settings"
-          FontSize="32"
-          TextColor="{DynamicResource Secondary}"/>
+          Style="{StaticResource Headline}"/>
       <Grid 
           ColumnSpacing="12"
           RowSpacing="12"
@@ -109,95 +108,65 @@
       <Button Text="Apply Colors"
         x:Name="ApplyColorsButton"
           Clicked="ApplyColorsButton_Clicked"/>
+          
       <Button Text="Toggle Theme"
-          Clicked="Button_Clicked"
+          Clicked="ToggleThemeButton_Clicked"
           Margin="0,24,0,0"/>
 
       <!-- Code Generation Format Selection -->
       <!-- Surfaces -->
       <Label Text="Surfaces"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
+          Style="{StaticResource SubHeadline}"/>
       <Border Background="{DynamicResource Surface0}"
           Padding="12">
-        <Label Text="Surface0"
-            TextColor="{DynamicResource OnSurface}"/>
+        <Label Text="Surface0"/>
       </Border>
       <Border Background="{DynamicResource Surface1}"
           Padding="12">
-        <Label Text="Surface1"
-            TextColor="{DynamicResource OnSurface}"/>
+        <Label Text="Surface1"/>
       </Border>
       <Border Background="{DynamicResource Surface2}"
           Padding="12">
-        <Label Text="Surface2"
-            TextColor="{DynamicResource OnSurface}"/>
+        <Label Text="Surface2"/>
       </Border>
       <Border Background="{DynamicResource Surface3}"
           Padding="12">
-        <Label Text="Surface3"
-            TextColor="{DynamicResource OnSurface}"/>
+        <Label Text="Surface3"/>
       </Border>
 
       <!-- Buttons -->
       <Label Text="Buttons"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
+          Style="{StaticResource SubHeadline}"/>
       <HorizontalStackLayout Spacing="16">
-        <Button Text="Primary"
-            BackgroundColor="{DynamicResource Primary}"
-            TextColor="{DynamicResource OnPrimary}"/>
+        <Button Text="Primary"/>
         <Button Text="Disabled"
-            IsEnabled="False"
-            BackgroundColor="{DynamicResource PrimaryDisabled}"
-            TextColor="{DynamicResource OnPrimary}"/>
-      </HorizontalStackLayout>
-      <HorizontalStackLayout Spacing="16">
-        <Button Text="Hover Preview"
-            BackgroundColor="{DynamicResource PrimaryHover}"
-            TextColor="{DynamicResource OnPrimary}"/>
-        <Button Text="Pressed Preview"
-            BackgroundColor="{DynamicResource PrimaryPressed}"
-            TextColor="{DynamicResource OnPrimary}"/>
+            IsEnabled="False"/>
       </HorizontalStackLayout>
 
       <!-- Text and Entry -->
       <Label Text="Text &amp; Entry"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
-      <Entry Placeholder="Placeholder"
-          TextColor="{DynamicResource OnBackground}"
-          PlaceholderColor="{DynamicResource Surface1}"/>
-      <Editor Text="Multiline text"
-          TextColor="{DynamicResource OnBackground}"/>
+          Style="{StaticResource SubHeadline}"/>
+      <Entry Placeholder="Placeholder"/>
+      <Editor Text="Multiline text"/>
 
       <!-- Progress &amp; Slider -->
       <Label Text="ProgressBar &amp; Slider"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
-      <ProgressBar Progress="0.6"
-          ProgressColor="{DynamicResource Primary}"/>
+          Style="{StaticResource SubHeadline}"/>
+      <ProgressBar Progress="0.6"/>
       <Slider Minimum="0"
           Maximum="100"
-          Value="50"
-          MinimumTrackColor="{DynamicResource Primary}"
-          MaximumTrackColor="{DynamicResource Surface1}"
-          ThumbColor="{DynamicResource Primary}"/>
+          Value="50"/>
 
       <!-- Switch &amp; CheckBox -->
       <Label Text="Switch &amp; CheckBox"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
-      <Switch IsToggled="True"
-          OnColor="{DynamicResource Primary}"
-          ThumbColor="{DynamicResource OnPrimary}"/>
+          Style="{StaticResource SubHeadline}"/>
+      <Switch IsToggled="True"/>
       <CheckBox IsChecked="True"
-          Color="{DynamicResource Primary}"/>
+          HorizontalOptions="Start"/>
 
       <!-- Feedback Colors -->
       <Label Text="Feedback Colors"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
+          Style="{StaticResource SubHeadline}"/>
       <StackLayout Orientation="Horizontal"
           Spacing="16">
         <Border BackgroundColor="{DynamicResource Error}"
@@ -218,19 +187,15 @@
       </StackLayout>
 
       <!-- Borders &amp; Focus Outline Preview -->
-      <Label Text="Borders &amp; Focus"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"/>
-      <Border Stroke="{DynamicResource Border}"
-          StrokeShape="RoundRectangle 4"
-          Padding="8">
-        <Label Text="Border token"
-            TextColor="{DynamicResource OnBackground}"/>
+      <Label Text="Borders"
+          Style="{StaticResource SubHeadline}"/>
+      <Border Padding="8">
+        <Label Text="Border token"/>
       </Border>
+
       <!-- Color Swatches -->
       <Label Text="Color Swatches"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"
+          Style="{StaticResource SubHeadline}"
           Margin="0,24,0,0"/>
       <Grid x:Name="ColorSwatchesGrid"
             ColumnDefinitions="*,*,*"
@@ -506,15 +471,9 @@
       </Grid>      
       
       <!-- Generated Code Output -->
-      <Label Text="Generated Theme Code"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"
-          Margin="0,24,0,0"/>
-      <Label Text="Code Generation Format"
-          FontSize="20"
-          TextColor="{DynamicResource Secondary}"
-          Margin="0,24,0,0"/>
-
+      <Label Text="Generate Theme Code"
+          Style="{StaticResource Headline}"/>
+      
     <sf:SfTextInputLayout Hint="Code Format" 
       BackgroundColor="Transparent" Background="Transparent"
       ContainerBackground="Transparent" ContainerType="Outlined">
@@ -525,11 +484,14 @@
               <x:String>AppThemeBinding</x:String>
               <x:String>DynamicResource</x:String>
               <x:String>MauiReactor</x:String>
-              <x:String>CSharpMarkup (CommunityToolkit)</x:String>
             </x:Array>
           </Picker.ItemsSource>
         </Picker>
     </sf:SfTextInputLayout>
+
+    <sf:SfTextInputLayout Hint="Include Styles" IsHintAlwaysFloated="True" 
+      BackgroundColor="Transparent" Background="Transparent"
+      ContainerBackground="Transparent" ContainerType="Outlined">
       
       <HorizontalStackLayout Spacing="16">
         <CheckBox x:Name="IncludeStylesCheckBox"
@@ -537,22 +499,27 @@
         <Label Text="Include Styles (Styles and Layouts)"
             VerticalOptions="Center"/>
       </HorizontalStackLayout>
+      </sf:SfTextInputLayout>
 
       <Button x:Name="GenerateXamlButton"
               Text="Generate Code"
-              Clicked="GenerateXamlButton_Clicked"
-              BackgroundColor="{DynamicResource Primary}"
-              TextColor="{DynamicResource OnPrimary}"/>
-      <Editor x:Name="ThemeXamlEditor"
+              Clicked="GenerateXamlButton_Clicked"/>
+      <Grid>
+        <Editor x:Name="ThemeXamlEditor"
               HeightRequest="200"
               IsReadOnly="True"
               BackgroundColor="{DynamicResource Surface0}"
               TextColor="{DynamicResource OnBackground}"/>
+        <ImageButton x:Name="CopyButton"
+            Source="{StaticResource IconCopy}"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,8,8,0"
+            Clicked="CopyButton_Clicked"/>
+      </Grid>
       <Button x:Name="SaveXamlButton"
               Text="Save to File"
               Clicked="SaveXamlButton_Clicked"
-              BackgroundColor="{DynamicResource Secondary}"
-              TextColor="{DynamicResource OnSecondary}"
               IsEnabled="False"/>
 
       

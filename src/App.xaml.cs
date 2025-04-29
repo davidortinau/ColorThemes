@@ -1,13 +1,15 @@
-﻿using Theming;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Theming;
 
 namespace dotnet_colorthemes;
 
 public partial class App : Application
 {
-    public static string Primary="#F04B25";
-    public static string Secondary="#AC3420";   
-    public static string LightBackground="#FBF8D4";
-    public static string DarkBackground="#1C201E";
+    public static string Primary = "#F04B25";
+    public static string Secondary = "#AC3420";
+    public static string LightBackground = "#FBF8D4";
+    public static string DarkBackground = "#1C201E";
     public App()
     {
         InitializeComponent();
@@ -44,10 +46,19 @@ public partial class App : Application
         // Overwrite all the DynamicResources
         App.Current?.Resources.ApplyTheme(theme);
     }
-    
 
-	protected override Window CreateWindow(IActivationState? activationState)
-	{
-		return new Window(new AppShell());
-	}
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new AppShell());
+    }
+    
+    public static Task DisplayToastAsync(string message)
+        {
+            ToastDuration duration = ToastDuration.Long;
+            double fontSize = 14;
+            var toast = Toast.Make(message, duration, fontSize);
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            return toast.Show(cancellationTokenSource.Token);
+        }
 }
