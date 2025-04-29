@@ -10,11 +10,11 @@ A delightful cross-platform application for generating beautiful, consistent col
 
 The .NET MAUI Color Themes Generator is a powerful, yet simple tool that helps developers create harmonious color palettes for their .NET MAUI applications. By entering just four colors (primary, secondary, light background, and dark background), it automatically generates a complete theme including:
 
-- Primary, Secondary, and Tertiary colors
+- Primary and Secondary colors
 - Surface variations (Surface0-3)
 - Feedback colors (Error, Success, Info)
 - Background and foreground colors
-- Hover, pressed, and disabled states
+- Active and disabled states
 - Light and dark theme variants optimized for accessibility
 
 ## ✨ Features
@@ -28,7 +28,6 @@ The .NET MAUI Color Themes Generator is a powerful, yet simple tool that helps d
   - AppThemeBinding with StaticResources (XAML) 
   - Color with DynamicResources (XAML)
   - MauiReactor (C#)
-  - C# Markup (CommunityToolkit)
 - **Cross-Platform**: Works on Windows, macOS, iOS, and Android
 
 ## 🚀 Getting Started
@@ -36,7 +35,7 @@ The .NET MAUI Color Themes Generator is a powerful, yet simple tool that helps d
 ### Prerequisites
 
 - .NET 10 SDK (or later)
-- Visual Studio 2025 or Visual Studio for Mac (or use the `dotnet` CLI)
+- Visual Studio or Visual Studio for Mac (or use the `dotnet` CLI)
 
 ### Installation
 
@@ -71,14 +70,13 @@ The .NET MAUI Color Themes Generator is a powerful, yet simple tool that helps d
    - AppThemeBinding with StaticResources (XAML)
    - Color with DynamicResources (XAML)
    - MauiReactor (C#)
-   - C# Markup (CommunityToolkit)
 6. **Generate code** by clicking the "Generate Code" button
 7. **Save the generated file** to include in your .NET MAUI project
 
 ## 📋 How to Use the Generated Theme in Your Project
 
-1. **Add the generated XAML file** to your project's Resources/Styles folder
-2. **Include the ResourceDictionary** in your App.xaml:
+1. **Add the generated XAML or C# file(s)** to your project's Resources/Styles folder
+2. **Include the ResourceDictionary** in your App.xaml/cs:
 
 ```xaml
 <Application.Resources>
@@ -91,7 +89,7 @@ The .NET MAUI Color Themes Generator is a powerful, yet simple tool that helps d
 </Application.Resources>
 ```
 
-3. **Start using the colors** in your XAML:
+3. **Start using the colors** in your XAML (or C#):
 
 > 💡 The generated theme includes both light and dark mode variants automatically!
 
@@ -109,18 +107,12 @@ The generated theme includes the following color tokens:
 |-------|-------------|
 | `Primary` | Main brand color for prominent UI elements |
 | `Secondary` | Complementary color for less prominent UI elements |
-| `Tertiary` | Additional color for accent elements |
 | `Surface0-3` | Background surfaces with increasing elevation |
 | `Background` | Default app background |
 | `OnBackground` | Text/icons on the background |
 | `OnSurface` | Text/icons on surface colors |
 | `Error`, `Success`, `Info` | Semantic colors for notifications and messaging |
 
-Plus variants like `PrimaryHover`, `PrimaryPressed`, `PrimaryDisabled`, etc.
-
-## 🖼️ Screenshots
-
-*(Add screenshots of your app here)*
 
 ## 🤝 Contributing
 
