@@ -106,6 +106,8 @@ namespace ColorThemes
             theme.OnSurface = theme.Surface1.IsDark() ? Colors.White : Colors.Black;
             theme.OnSurfaceDark = theme.Surface1Dark.IsDark() ? Colors.White : Colors.Black;
 
+            theme.UpdateHexFromColors();
+
             return theme;
         }
         
@@ -131,6 +133,51 @@ namespace ColorThemes
             {
                 return Generate(primary, primary, secondary, secondary, background, background);
             }
+        }
+        
+        /// <summary>
+        /// Creates a ColorTheme with both light and dark mode colors.
+        /// This overload uses the exact light and dark background colors provided, while
+        /// automatically generating dark variants of the primary and secondary colors.
+        /// </summary>
+        /// <param name="primary">Your app's primary accent color (light variant).</param>
+        /// <param name="secondary">Your app's secondary accent color (light variant).</param>
+        /// <param name="lightBackground">Base background for light mode.</param>
+        /// <param name="darkBackground">Base background for dark mode.</param>
+        /// <param name="isDarkTheme">True for dark mode, false for light.</param>
+        /// <returns>A ColorTheme with appropriate color variants for both light and dark themes.</returns>
+        public static ColorTheme Generate(
+            Color primary,
+            Color secondary,
+            Color lightBackground,
+            Color darkBackground,
+            bool isDarkTheme)
+        {
+            // Generate dark variants of primary and secondary colors
+            Color darkPrimary = AdjustColorForDarkTheme(primary);
+            Color darkSecondary = AdjustColorForDarkTheme(secondary);
+            
+            // Call the full Generate method with our calculated dark variants
+            return Generate(primary, darkPrimary, secondary, darkSecondary, lightBackground, darkBackground);
+        }
+        
+        /// <summary>
+        /// Helper method to adjust a color for dark theme by increasing its vibrancy and brightness.
+        /// </summary>
+        /// <param name="color">The light theme color to adjust</param>
+        /// <returns>A color adjusted for dark theme</returns>
+        public static Color AdjustColorForDarkTheme(Color color)
+        {
+            // Convert to HSL to manipulate the saturation and luminosity
+            color.ToHsl(out float hue, out float saturation, out float luminosity);
+            
+            // Increase saturation for more vibrant colors in dark mode
+            float darkSaturation = MathF.Min(saturation * 1.2f, 1.0f);
+            
+            // Increase luminosity for better visibility in dark mode
+            float darkLuminosity = MathF.Min(luminosity + 0.15f, 0.8f);
+            
+            return Color.FromHsla(hue, darkSaturation, darkLuminosity);
         }
 
         /// <summary>

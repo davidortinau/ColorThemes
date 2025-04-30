@@ -304,8 +304,6 @@ public partial class MainPageModel : ObservableObject
         // Apply the theme if needed
         await ApplySelectedThemeAsync();
     }
-
-    // We're using GenerateCodeCommand instead of GenerateColorCodeCommand
     
     /// <summary>
     /// Generates code for the current theme based on the selected format
@@ -327,14 +325,11 @@ public partial class MainPageModel : ObservableObject
             bool isDarkTheme = Application.Current?.RequestedTheme == AppTheme.Dark;
             
             // Generate the theme using the same values shown in the Editor
-            // Use the Generate method with both light and dark background colors
-            // This ensures the generated code matches exactly what's shown in the Editor
             var currentTheme = ColorThemeGenerator.Generate(
-                primary: Color.FromArgb(theme.PrimaryHex),
-                secondary: Color.FromArgb(theme.SecondaryHex),
-                lightBackground: Color.FromArgb(theme.BackgroundHex),
-                darkBackground: Color.FromArgb(theme.BackgroundDarkHex),
-                isDarkTheme: isDarkTheme);
+                Color.FromArgb(theme.PrimaryHex),
+                Color.FromArgb(theme.SecondaryHex),
+                Color.FromArgb(isDarkTheme ? theme.BackgroundDarkHex : theme.BackgroundHex),
+                isDarkTheme);
 
             // Determine which format to use based on the selected format
             string templateFileName = GetTemplateFileName(SelectedCodeFormat);
@@ -378,9 +373,6 @@ public partial class MainPageModel : ObservableObject
         }
     }
     
-    /// <summary>
-    /// Gets the template file name based on the selected code format
-    /// </summary>
     /// <summary>
     /// Gets the template file name based on the selected code format
     /// </summary>

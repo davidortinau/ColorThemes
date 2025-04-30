@@ -10,7 +10,6 @@
              xmlns:PageModels="clr-namespace:ColorThemes.PageModels"
              x:DataType="PageModels:MainPageModel"
              x:Class="ColorThemes.MainPage"
-             Background="{DynamicResource Background}"
              Title="Color Theme Generator">
   <Shell.TitleView>
     <Grid ColumnDefinitions="*, Auto"
@@ -156,15 +155,50 @@
               </HorizontalStackLayout>
 
 
-              <expander:SfExpander HeaderIconPosition="None" IsExpanded="True">
+              <expander:SfExpander HeaderIconPosition="None" IsExpanded="False">
                 <expander:SfExpander.Header>
                   <HorizontalStackLayout Spacing="8" Margin="8,12">
                     <Image x:Name="Caret" Source="{StaticResource IconCaretRight}" WidthRequest="24" HeightRequest="24" VerticalOptions="Center"/>
-                    <Label Text="Theme Library" Style="{StaticResource SubHeadline}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Text="Active Theme Code" Style="{StaticResource SubHeadline}" HorizontalOptions="Start" VerticalOptions="Center"/>
                   </HorizontalStackLayout>
-                </expander:SfExpander.Header>
+                </expander:SfExpander.Header>                <expander:SfExpander.Content>
+              <Editor Text="{Binding CurrentThemeDetails}" 
+                     IsReadOnly="True"
+                     HeightRequest="200"
+                     Background="{DynamicResource Surface0}"
+                     TextColor="{DynamicResource OnBackground}" />
+              </expander:SfExpander.Content>
 
-                <expander:SfExpander.Content>
+                <VisualStateManager.VisualStateGroups>
+                      <VisualStateGroupList>
+                          <VisualStateGroup>
+                              <VisualState Name="Expanded">
+                                  <VisualState.Setters>
+                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretDown}"/>
+                                      
+                                  </VisualState.Setters>
+                              </VisualState>
+                              <VisualState Name="Collapsed">
+                                  <VisualState.Setters>
+                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretRight}"/>
+                                      
+                                  </VisualState.Setters>
+                              </VisualState>
+                              <VisualState Name="Normal">
+                                  <VisualState.Setters>
+                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretRight}"/>
+                                      <Setter Property="HeaderBackground" Value="#faf8f7"/>
+                                      <Setter Property="HeaderIconColor" Value="#000000"/>
+                                  </VisualState.Setters>
+                              </VisualState>
+                          </VisualStateGroup>
+                      </VisualStateGroupList>
+                  </VisualStateManager.VisualStateGroups>
+              </expander:SfExpander>
+
+              <Label Text="Available Themes"
+                     Style="{StaticResource SubHeadline}"
+                     Margin="0,24,0,0"/>
               <CollectionView ItemsSource="{Binding Themes}">
                 <CollectionView.ItemsLayout>
                   <LinearItemsLayout Orientation="Horizontal"
@@ -204,34 +238,6 @@
                 </CollectionView.ItemTemplate>
 
               </CollectionView>
-              </expander:SfExpander.Content>
-
-                <VisualStateManager.VisualStateGroups>
-                      <VisualStateGroupList>
-                          <VisualStateGroup>
-                              <VisualState Name="Expanded">
-                                  <VisualState.Setters>
-                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretDown}"/>
-                                      
-                                  </VisualState.Setters>
-                              </VisualState>
-                              <VisualState Name="Collapsed">
-                                  <VisualState.Setters>
-                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretRight}"/>
-                                      
-                                  </VisualState.Setters>
-                              </VisualState>
-                              <VisualState Name="Normal">
-                                  <VisualState.Setters>
-                                      <Setter TargetName="Caret" Property="Image.Source" Value="{StaticResource IconCaretRight}"/>
-                                      <Setter Property="HeaderBackground" Value="#faf8f7"/>
-                                      <Setter Property="HeaderIconColor" Value="#000000"/>
-                                  </VisualState.Setters>
-                              </VisualState>
-                          </VisualStateGroup>
-                      </VisualStateGroupList>
-                  </VisualStateManager.VisualStateGroups>
-              </expander:SfExpander>
             </VerticalStackLayout>
           </ScrollView>
         </tabView:SfTabItem.Content>
@@ -621,7 +627,7 @@
                                     Background="Transparent"
                                     ContainerBackground="Transparent"
                                     ContainerType="Outlined">
-                <Picker x:Name="CodeFormatPicker">
+                <Picker x:Name="CodeFormatPicker" SelectedItem="{Binding SelectedCodeFormat}">
                   <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                       <x:String>AppThemeColor (CommunityToolkit)</x:String>

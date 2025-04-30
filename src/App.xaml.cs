@@ -7,29 +7,30 @@ namespace ColorThemes;
 public partial class App : Application
 {
     private readonly ThemeService _themeService;
-    
-    public App(ThemeService themeService)
+      public App(ThemeService themeService)
     {
         _themeService = themeService;
         
         InitializeComponent();
         
-        // Apply default theme
-        _themeService.ApplyThemeColors(
-            "#F04B25", "#AC3420", "#FBF8D4", "#1C201E");
-        
         if (Application.Current != null)
             Application.Current.RequestedThemeChanged += OnRequestedThemeChanged;
             
-        // Load themes in the background
+        // Load themes in the background and apply the first theme
         LoadThemesAsync();
     }
-    
-    private async void LoadThemesAsync()
+      private async void LoadThemesAsync()
     {
         try
         {
             await _themeService.LoadThemesAsync();
+            
+            // Apply the first theme after loading
+            if (_themeService.AvailableThemes.Count > 0)
+            {
+                var firstTheme = _themeService.AvailableThemes.First();
+                await _themeService.ApplyThemeByTitleAsync(firstTheme.Title);
+            }
         }
         catch
         {

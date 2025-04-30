@@ -65,14 +65,20 @@ public class ThemeService
     public void ApplyCustomTheme(string title, string primary, string secondary,
                                 string lightBackground, string darkBackground)
     {
-        var customTheme = new ColorTheme
-        {
-            Title = title,
-            PrimaryHex = primary,
-            SecondaryHex = secondary,
-            BackgroundHex = lightBackground,
-            BackgroundDarkHex = darkBackground
-        };
+        // Create the custom theme using the new overload that handles light and dark backgrounds
+        // while automatically generating appropriate dark variants of primary and secondary colors
+        var customTheme = ColorThemeGenerator.Generate(
+                primary: Color.FromArgb(primary),
+                secondary: Color.FromArgb(secondary),
+                lightBackground: Color.FromArgb(lightBackground),
+                darkBackground: Color.FromArgb(darkBackground),
+                isDarkTheme: Application.Current?.RequestedTheme == AppTheme.Dark);        
+
+        customTheme.Title = title;
+        customTheme.PrimaryHex = primary;
+        customTheme.SecondaryHex = secondary;
+        customTheme.BackgroundHex = lightBackground;
+        customTheme.BackgroundDarkHex = darkBackground;
 
         CurrentTheme = customTheme;
 
@@ -85,11 +91,13 @@ public class ThemeService
         // Check if the app is in dark mode
         var isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
 
-        // Generate the theme
+        // Generate the theme using the new overload that handles both light and dark backgrounds
+        // and automatically generates appropriate dark variants of primary and secondary colors
         var theme = ColorThemeGenerator.Generate(
             primary: Color.FromArgb(primary),
             secondary: Color.FromArgb(secondary),
-            background: isDark ? Color.FromArgb(darkBackground) : Color.FromArgb(lightBackground),
+            lightBackground: Color.FromArgb(lightBackground),
+            darkBackground: Color.FromArgb(darkBackground),
             isDarkTheme: isDark);
 
         // Apply the theme
