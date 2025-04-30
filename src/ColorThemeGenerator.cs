@@ -31,15 +31,20 @@ namespace ColorThemes
             lightBackground ??= Colors.White;
             darkBackground ??= Color.FromArgb("#121212"); // Material dark theme background
 
-            // Default feedback colors
-            var lightError = Color.FromArgb("#B00020");
-            var darkError = Color.FromArgb("#CF6679");
+            // Base feedback colors (we maintain their hues but adjust other properties)
+            Color baseErrorLight = Color.FromArgb("#B00020");  // Deep red
+            Color baseSuccessLight = Color.FromArgb("#2E7D32"); // Deep green
+            Color baseInfoLight = Color.FromArgb("#0288D1");   // Deep blue
             
-            var lightSuccess = Color.FromArgb("#2E7D32");
-            var darkSuccess = Color.FromArgb("#69F0AE");
+            // Generate feedback colors that blend with the theme colors
+            var lightError = BlendFeedbackColor(baseErrorLight, lightPrimary, lightBackground, false);
+            var darkError = BlendFeedbackColor(baseErrorLight, darkPrimary, darkBackground, true);
             
-            var lightInfo = Color.FromArgb("#0288D1");
-            var darkInfo = Color.FromArgb("#82B1FF");
+            var lightSuccess = BlendFeedbackColor(baseSuccessLight, lightPrimary, lightBackground, false);
+            var darkSuccess = BlendFeedbackColor(baseSuccessLight, darkPrimary, darkBackground, true);
+            
+            var lightInfo = BlendFeedbackColor(baseInfoLight, lightPrimary, lightBackground, false);
+            var darkInfo = BlendFeedbackColor(baseInfoLight, darkPrimary, darkBackground, true);
 
             // Helper lambdas for light/dark variants
             static Color Lighten(Color c, float amount) => c.WithLuminosity(MathF.Min(c.GetLuminosity() + amount, 1f));
@@ -50,16 +55,10 @@ namespace ColorThemes
                 // Light theme colors
                 // Primary variants
                 Primary = lightPrimary,
-                PrimaryHover = Darken(lightPrimary, 0.10f),
-                PrimaryPressed = Darken(lightPrimary, 0.25f),
-                PrimaryDisabled = lightPrimary.WithSaturation(0.2f).WithAlpha(0.5f),
                 OnPrimary = lightPrimary.IsDark() ? Colors.White : Colors.Black,
 
                 // Secondary variants
                 Secondary = lightSecondary,
-                SecondaryHover = Darken(lightSecondary, 0.10f),
-                SecondaryPressed = Darken(lightSecondary, 0.25f),
-                SecondaryDisabled = lightSecondary.WithSaturation(0.2f).WithAlpha(0.5f),
                 OnSecondary = lightSecondary.IsDark() ? Colors.White : Colors.Black,
 
                 // Background & surfaces
@@ -77,23 +76,13 @@ namespace ColorThemes
                 Success = lightSuccess,
                 Info = lightInfo,
 
-                // Borders & focus
-                Border = Darken(lightBackground, 0.20f),
-                FocusOutline = lightInfo.WithAlpha(0.8f),
-                
                 // Dark theme colors
                 // Primary variants
                 PrimaryDark = darkPrimary,
-                PrimaryHoverDark = Lighten(darkPrimary, 0.15f),
-                PrimaryPressedDark = Lighten(darkPrimary, 0.30f),
-                PrimaryDisabledDark = darkPrimary.WithSaturation(0.2f).WithAlpha(0.5f),
                 OnPrimaryDark = darkPrimary.IsDark() ? Colors.White : Colors.Black,
 
                 // Secondary variants
                 SecondaryDark = darkSecondary,
-                SecondaryHoverDark = Lighten(darkSecondary, 0.15f),
-                SecondaryPressedDark = Lighten(darkSecondary, 0.30f),
-                SecondaryDisabledDark = darkSecondary.WithSaturation(0.2f).WithAlpha(0.5f),
                 OnSecondaryDark = darkSecondary.IsDark() ? Colors.White : Colors.Black,
 
                 // Background & surfaces
@@ -111,9 +100,6 @@ namespace ColorThemes
                 SuccessDark = darkSuccess,
                 InfoDark = darkInfo,
 
-                // Borders & focus
-                BorderDark = Lighten(darkBackground, 0.20f),
-                FocusOutlineDark = darkInfo.WithAlpha(0.8f)
             };
             
             // OnSurface needs to be set after Surface1 is initialized
@@ -162,15 +148,9 @@ namespace ColorThemes
             {
                 // Use dynamic AppThemeColor from the toolkit
                 ApplyAppThemeColor(resources, nameof(theme.Primary), theme.Primary, theme.PrimaryDark);
-                ApplyAppThemeColor(resources, nameof(theme.PrimaryHover), theme.PrimaryHover, theme.PrimaryHoverDark);
-                ApplyAppThemeColor(resources, nameof(theme.PrimaryPressed), theme.PrimaryPressed, theme.PrimaryPressedDark);
-                ApplyAppThemeColor(resources, nameof(theme.PrimaryDisabled), theme.PrimaryDisabled, theme.PrimaryDisabledDark);
                 ApplyAppThemeColor(resources, nameof(theme.OnPrimary), theme.OnPrimary, theme.OnPrimaryDark);
 
                 ApplyAppThemeColor(resources, nameof(theme.Secondary), theme.Secondary, theme.SecondaryDark);
-                ApplyAppThemeColor(resources, nameof(theme.SecondaryHover), theme.SecondaryHover, theme.SecondaryHoverDark);
-                ApplyAppThemeColor(resources, nameof(theme.SecondaryPressed), theme.SecondaryPressed, theme.SecondaryPressedDark);
-                ApplyAppThemeColor(resources, nameof(theme.SecondaryDisabled), theme.SecondaryDisabled, theme.SecondaryDisabledDark);
                 ApplyAppThemeColor(resources, nameof(theme.OnSecondary), theme.OnSecondary, theme.OnSecondaryDark);
 
                 ApplyAppThemeColor(resources, nameof(theme.Background), theme.Background, theme.BackgroundDark);
@@ -184,23 +164,14 @@ namespace ColorThemes
                 ApplyAppThemeColor(resources, nameof(theme.Error), theme.Error, theme.ErrorDark);
                 ApplyAppThemeColor(resources, nameof(theme.Success), theme.Success, theme.SuccessDark);
                 ApplyAppThemeColor(resources, nameof(theme.Info), theme.Info, theme.InfoDark);
-
-                ApplyAppThemeColor(resources, nameof(theme.Border), theme.Border, theme.BorderDark);
-                ApplyAppThemeColor(resources, nameof(theme.FocusOutline), theme.FocusOutline, theme.FocusOutlineDark);
             }
             else
             {
                 // Fallback to regular Colors if the AppThemeColor is not available
                 resources[nameof(theme.Primary)] = theme.Primary;
-                resources[nameof(theme.PrimaryHover)] = theme.PrimaryHover;
-                resources[nameof(theme.PrimaryPressed)] = theme.PrimaryPressed;
-                resources[nameof(theme.PrimaryDisabled)] = theme.PrimaryDisabled;
                 resources[nameof(theme.OnPrimary)] = theme.OnPrimary;
 
                 resources[nameof(theme.Secondary)] = theme.Secondary;
-                resources[nameof(theme.SecondaryHover)] = theme.SecondaryHover;
-                resources[nameof(theme.SecondaryPressed)] = theme.SecondaryPressed;
-                resources[nameof(theme.SecondaryDisabled)] = theme.SecondaryDisabled;
                 resources[nameof(theme.OnSecondary)] = theme.OnSecondary;
 
                 resources[nameof(theme.Background)] = theme.Background;
@@ -214,9 +185,6 @@ namespace ColorThemes
                 resources[nameof(theme.Error)] = theme.Error;
                 resources[nameof(theme.Success)] = theme.Success;
                 resources[nameof(theme.Info)] = theme.Info;
-
-                resources[nameof(theme.Border)] = theme.Border;
-                resources[nameof(theme.FocusOutline)] = theme.FocusOutline;
             }
         }
         
@@ -252,66 +220,6 @@ namespace ColorThemes
                 // Fallback if type not found
                 resources[key] = lightColor;
             }
-        }
-
-        /// <summary>
-        /// Generates a XAML representation of the ColorTheme that can be displayed in an Editor or saved to a file.
-        /// Uses the .NET Community Toolkit's AppThemeColor to express both Light and Dark colors together.
-        /// </summary>
-        /// <param name="theme">The ColorTheme to convert to XAML</param>
-        /// <param name="resourceDictionaryName">Optional name for the ResourceDictionary</param>
-        /// <returns>A string containing the XAML representation of the theme</returns>
-        public static string ToXaml(this ColorTheme theme, string resourceDictionaryName = "ThemeColors")
-        {
-            var sb = new StringBuilder();
-            
-            sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-            sb.AppendLine("<ResourceDictionary ");
-            sb.AppendLine("    xmlns=\"http://schemas.microsoft.com/dotnet/2021/maui\"");
-            sb.AppendLine("    xmlns:x=\"http://schemas.microsoft.com/winfx/2009/xaml\"");
-            sb.AppendLine("    xmlns:toolkit=\"http://schemas.microsoft.com/dotnet/2022/maui/toolkit\"");
-            sb.AppendLine($"    x:Name=\"{resourceDictionaryName}\">");
-            sb.AppendLine();
-
-            // Primary colors
-            AppendAppThemeColorResource(sb, nameof(theme.Primary), theme.Primary, theme.PrimaryDark);
-            AppendAppThemeColorResource(sb, nameof(theme.PrimaryHover), theme.PrimaryHover, theme.PrimaryHoverDark);
-            AppendAppThemeColorResource(sb, nameof(theme.PrimaryPressed), theme.PrimaryPressed, theme.PrimaryPressedDark);
-            AppendAppThemeColorResource(sb, nameof(theme.PrimaryDisabled), theme.PrimaryDisabled, theme.PrimaryDisabledDark);
-            AppendAppThemeColorResource(sb, nameof(theme.OnPrimary), theme.OnPrimary, theme.OnPrimaryDark);
-            sb.AppendLine();
-
-            // Secondary colors
-            AppendAppThemeColorResource(sb, nameof(theme.Secondary), theme.Secondary, theme.SecondaryDark);
-            AppendAppThemeColorResource(sb, nameof(theme.SecondaryHover), theme.SecondaryHover, theme.SecondaryHoverDark);
-            AppendAppThemeColorResource(sb, nameof(theme.SecondaryPressed), theme.SecondaryPressed, theme.SecondaryPressedDark);
-            AppendAppThemeColorResource(sb, nameof(theme.SecondaryDisabled), theme.SecondaryDisabled, theme.SecondaryDisabledDark);
-            AppendAppThemeColorResource(sb, nameof(theme.OnSecondary), theme.OnSecondary, theme.OnSecondaryDark);
-            sb.AppendLine();
-
-            // Background and Surfaces
-            AppendAppThemeColorResource(sb, nameof(theme.Background), theme.Background, theme.BackgroundDark);
-            AppendAppThemeColorResource(sb, nameof(theme.Surface0), theme.Surface0, theme.Surface0Dark);
-            AppendAppThemeColorResource(sb, nameof(theme.Surface1), theme.Surface1, theme.Surface1Dark);
-            AppendAppThemeColorResource(sb, nameof(theme.Surface2), theme.Surface2, theme.Surface2Dark);
-            AppendAppThemeColorResource(sb, nameof(theme.Surface3), theme.Surface3, theme.Surface3Dark);
-            AppendAppThemeColorResource(sb, nameof(theme.OnBackground), theme.OnBackground, theme.OnBackgroundDark);
-            AppendAppThemeColorResource(sb, nameof(theme.OnSurface), theme.OnSurface, theme.OnSurfaceDark);
-            sb.AppendLine();
-
-            // Feedback colors
-            AppendAppThemeColorResource(sb, nameof(theme.Error), theme.Error, theme.ErrorDark);
-            AppendAppThemeColorResource(sb, nameof(theme.Success), theme.Success, theme.SuccessDark);
-            AppendAppThemeColorResource(sb, nameof(theme.Info), theme.Info, theme.InfoDark);
-            sb.AppendLine();
-
-            // Borders and Focus
-            AppendAppThemeColorResource(sb, nameof(theme.Border), theme.Border, theme.BorderDark);
-            AppendAppThemeColorResource(sb, nameof(theme.FocusOutline), theme.FocusOutline, theme.FocusOutlineDark);
-            
-            sb.AppendLine("</ResourceDictionary>");
-            
-            return sb.ToString();
         }
 
         /// <summary>
@@ -361,6 +269,48 @@ namespace ColorThemes
             return $"#{(int)(color.Red * 255):X2}{(int)(color.Green * 255):X2}{(int)(color.Blue * 255):X2}";
         }
         
+        /// <summary>
+        /// Blends a feedback color with primary color while maintaining contrast with background.
+        /// </summary>
+        /// <param name="baseFeedbackColor">Base semantic color (error, success, info)</param>
+        /// <param name="primaryColor">The theme's primary color to blend with</param>
+        /// <param name="backgroundColor">The background color to ensure contrast against</param>
+        /// <param name="isDarkTheme">Whether we're in dark theme mode</param>
+        /// <returns>A blended feedback color that maintains its semantic meaning</returns>
+        private static Color BlendFeedbackColor(Color baseFeedbackColor, Color primaryColor, Color backgroundColor, bool isDarkTheme)
+        {
+            // Extract hue from the base feedback color (we want to maintain this for semantic clarity)
+            baseFeedbackColor.ToHsl(out float baseHue, out float _, out float _);
+            
+            // Get saturation influence from primary (adds theme cohesion)
+            primaryColor.ToHsl(out float _, out float primarySaturation, out float primaryLuminosity);
+            
+            // Calculate saturation - weighted blend favoring the base feedback color
+            float saturation = (baseFeedbackColor.GetSaturation() * 0.7f) + (primarySaturation * 0.3f);
+            
+            // For dark themes, we generally want more vibrant colors
+            if (isDarkTheme)
+            {
+                saturation = MathF.Min(saturation * 1.2f, 1.0f);
+            }
+            
+            // Calculate luminosity based on background to ensure contrast
+            float targetLuminosity;
+            
+            if (isDarkTheme)
+            {
+                // In dark mode, make feedback colors brighter
+                targetLuminosity = 0.6f + (primaryLuminosity * 0.2f);
+            }
+            else
+            {
+                // In light mode, make colors deeper
+                targetLuminosity = MathF.Min(0.4f + (primaryLuminosity * 0.1f), 0.5f);
+            }
+            
+            // Create our final color maintaining the original hue
+            return Color.FromHsla(baseHue, saturation, targetLuminosity);
+        }
 
     }
 }

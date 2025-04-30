@@ -25,13 +25,13 @@
 
     <!-- BoxView -->
     <Style TargetType="BoxView">
-        <Setter Property="BackgroundColor" Value="{DynamicResource Surface1}" />
+        <Setter Property="Background" Value="{DynamicResource Surface1}" />
     </Style>
 
     <!-- Button -->
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{DynamicResource OnPrimary}" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
+        <Setter Property="Background" Value="{DynamicResource Primary}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="BorderWidth" Value="0" />
@@ -46,12 +46,12 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{DynamicResource PrimaryDisabled}" />
-                            <Setter Property="BackgroundColor" Value="{DynamicResource Surface1}" />
+                            <Setter Property="Background" Value="{DynamicResource Surface1}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryHover}" />
+                            <Setter Property="Background" Value="{DynamicResource Secondary}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -67,7 +67,7 @@
     <!-- DatePicker -->
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
@@ -77,7 +77,7 @@
     <!-- Editor -->
     <Style TargetType="Editor">
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
     </Style>
@@ -85,7 +85,7 @@
     <!-- Entry -->
     <Style TargetType="Entry">
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
     </Style>
@@ -95,7 +95,7 @@
         <Setter Property="HasShadow" Value="False" />
         <Setter Property="BorderColor" Value="{DynamicResource Border}" />
         <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource Background}" />
+        <Setter Property="Background" Value="{DynamicResource Background}" />
     </Style>
 
     <!-- ImageButton -->
@@ -141,7 +141,7 @@
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
         <Setter Property="TitleColor" Value="{DynamicResource Surface1}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
     </Style>
@@ -154,7 +154,7 @@
     <!-- RadioButton -->
     <Style TargetType="RadioButton">
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
     </Style>
 
     <!-- RefreshView -->
@@ -167,7 +167,7 @@
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
         <Setter Property="PlaceholderColor" Value="{DynamicResource Surface1}" />
         <Setter Property="CancelButtonColor" Value="{DynamicResource Surface1}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
     </Style>
@@ -208,7 +208,7 @@
     <!-- TimePicker -->
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{DynamicResource OnBackground}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
     </Style>
@@ -216,12 +216,12 @@
     <!-- Page -->
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource Background}" />
+        <Setter Property="Background" Value="{DynamicResource Background}" />
     </Style>
 
     <!-- Shell -->
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="BackgroundColor" Value="{DynamicResource Background}" />
+        <Setter Property="Background" Value="{DynamicResource Background}" />
         <Setter Property="ForegroundColor" Value="{DynamicResource OnBackground}" />
         <Setter Property="TitleColor" Value="{DynamicResource OnBackground}" />
         <Setter Property="DisabledColor" Value="{DynamicResource Surface1}" />
@@ -234,13 +234,13 @@
 
     <!-- NavigationPage -->
     <Style TargetType="NavigationPage">
-        <Setter Property="BarBackgroundColor" Value="{DynamicResource Background}" />
+        <Setter Property="BarBackground" Value="{DynamicResource Background}" />
         <Setter Property="BarTextColor" Value="{DynamicResource OnBackground}" />
     </Style>
 
     <!-- TabbedPage -->
     <Style TargetType="TabbedPage">
-        <Setter Property="BarBackgroundColor" Value="{DynamicResource Background}" />
+        <Setter Property="BarBackground" Value="{DynamicResource Background}" />
         <Setter Property="BarTextColor" Value="{DynamicResource Primary}" />
         <Setter Property="UnselectedTabColor" Value="{DynamicResource Surface1}" />
         <Setter Property="SelectedTabColor" Value="{DynamicResource Primary}" />

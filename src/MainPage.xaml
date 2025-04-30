@@ -10,8 +10,24 @@
              xmlns:PageModels="clr-namespace:ColorThemes.PageModels"
              x:DataType="PageModels:MainPageModel"
              x:Class="ColorThemes.MainPage"
-             BackgroundColor="{DynamicResource Background}"
+             Background="{DynamicResource Background}"
              Title="Color Theme Generator">
+  <Shell.TitleView>
+    <Grid ColumnDefinitions="*, Auto"
+        Margin="0,0,10,0">
+      <Label Text="Color Theme Generator"
+             FontAttributes="Bold"
+             HorizontalOptions="Start"
+             VerticalOptions="Center"/>
+     
+      <Label 
+        Grid.Column="1"
+        Padding="8,4"
+        Text="{Binding CurrentThemeName,StringFormat='Theme: {0}'}"
+        HorizontalOptions="End"
+        VerticalOptions="Center"/>
+    </Grid>
+  </Shell.TitleView>
 
   <tabView:SfTabView x:Name="tabView">
     <tabView:SfTabView.Items>
@@ -29,15 +45,17 @@
                 ColumnDefinitions="Auto,*,30,*"
                 RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                 <Label Text="Title"
-                  VerticalOptions="Center"
+                       VerticalOptions="Center"
                        Grid.Column="0"/>
-                <Entry Text="{Binding SelectedTheme.Title}"
+                <Entry Text="{Binding ThemeTitle}"
                        Grid.Column="1"/>
                 <Label Text="Primary"
-                  VerticalOptions="Center"
-                       Grid.Column="0" Grid.Row="1"/>
+                       VerticalOptions="Center"
+                       Grid.Column="0"
+                    Grid.Row="1"/>
                 <Entry
-                  Grid.Column="1" Grid.Row="1"
+                  Grid.Column="1"
+                    Grid.Row="1"
                   Text="{Binding SelectedTheme.PrimaryHex}"
                   x:Name="PrimaryColorEntry">
                   <Entry.Behaviors>
@@ -48,19 +66,21 @@
                   </Entry.Behaviors>
                 </Entry>
                 <Border HeightRequest="30"
-                         WidthRequest="30"
-                         VerticalOptions="Center"
-                         BackgroundColor="{Binding Text, Source={x:Reference PrimaryColorEntry}, x:DataType=Entry}"
-                         Stroke="{DynamicResource OnBackground}"
-                         StrokeThickness="1"
-                         Grid.Column="2"  Grid.Row="1"/>
+                        WidthRequest="30"
+                        VerticalOptions="Center"
+                        BackgroundColor="{Binding Text, Source={x:Reference PrimaryColorEntry}, x:DataType=Entry}"
+                        Stroke="{DynamicResource OnBackground}"
+                        StrokeThickness="1"
+                        Grid.Column="2"
+                    Grid.Row="1"/>
 
                 <Label Text="Secondary"
-                  VerticalOptions="Center"
+                       VerticalOptions="Center"
                        Grid.Column="0"
                        Grid.Row="2"/>
                 <Entry Text="{Binding SelectedTheme.SecondaryHex}"
-                       Grid.Column="1" Grid.Row="2"
+                       Grid.Column="1"
+                    Grid.Row="2"
                        x:Name="SecondaryColorEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
@@ -70,22 +90,22 @@
                   </Entry.Behaviors>
                 </Entry>
                 <Border HeightRequest="30"
-                         WidthRequest="30"
-                         VerticalOptions="Center"
-                         BackgroundColor="{Binding Text, Source={x:Reference SecondaryColorEntry}, x:DataType=Entry}"
-                         Stroke="{DynamicResource OnBackground}"
-                         StrokeThickness="1"
-                         Grid.Column="2"
-                         Grid.Row="2"/>
+                        WidthRequest="30"
+                        VerticalOptions="Center"
+                        BackgroundColor="{Binding Text, Source={x:Reference SecondaryColorEntry}, x:DataType=Entry}"
+                        Stroke="{DynamicResource OnBackground}"
+                        StrokeThickness="1"
+                        Grid.Column="2"
+                        Grid.Row="2"/>
 
                 <Label Text="Light Background"
-                  VerticalOptions="Center"
+                       VerticalOptions="Center"
                        Grid.Column="0"
                        Grid.Row="3"/>
                 <Entry Text="{Binding SelectedTheme.BackgroundHex}"
                        Grid.Column="1"
                        Grid.Row="3"
-                       x:Name="LightBackgroundColorEntry">
+                       x:Name="LightBackgroundEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
                       InvalidStyle="{StaticResource InvalidEntryStyle}"
@@ -94,22 +114,22 @@
                   </Entry.Behaviors>
                 </Entry>
                 <Border HeightRequest="30"
-                         WidthRequest="30"
-                         VerticalOptions="Center"
-                         BackgroundColor="{Binding Text, Source={x:Reference LightBackgroundColorEntry}, x:DataType=Entry}"
-                         Stroke="{DynamicResource OnBackground}"
-                         StrokeThickness="1"
-                         Grid.Column="2"
-                         Grid.Row="3"/>
+                        WidthRequest="30"
+                        VerticalOptions="Center"
+                        BackgroundColor="{Binding Text, Source={x:Reference LightBackgroundEntry}, x:DataType=Entry}"
+                        Stroke="{DynamicResource OnBackground}"
+                        StrokeThickness="1"
+                        Grid.Column="2"
+                        Grid.Row="3"/>
 
                 <Label Text="Dark Background"
-                      VerticalOptions="Center"
+                       VerticalOptions="Center"
                        Grid.Column="0"
                        Grid.Row="4"/>
                 <Entry Text="{Binding SelectedTheme.BackgroundDarkHex}"
                        Grid.Column="1"
                        Grid.Row="4"
-                       x:Name="DarkBackgroundColorEntry">
+                       x:Name="DarkBackgroundEntry">
                   <Entry.Behaviors>
                     <toolkit:TextValidationBehavior
                       InvalidStyle="{StaticResource InvalidEntryStyle}"
@@ -118,25 +138,25 @@
                   </Entry.Behaviors>
                 </Entry>
                 <Border HeightRequest="30"
-                         WidthRequest="30"
-                         VerticalOptions="Center"
-                         BackgroundColor="{Binding Text, Source={x:Reference DarkBackgroundColorEntry}, x:DataType=Entry}"
-                         Stroke="{DynamicResource OnBackground}"
-                         StrokeThickness="1"
-                         Grid.Column="2"
-                         Grid.Row="4"/>
+                        WidthRequest="30"
+                        VerticalOptions="Center"
+                        BackgroundColor="{Binding Text, Source={x:Reference DarkBackgroundEntry}, x:DataType=Entry}"
+                        Stroke="{DynamicResource OnBackground}"
+                        StrokeThickness="1"
+                        Grid.Column="2"
+                        Grid.Row="4"/>
               </Grid>
-
               <HorizontalStackLayout Spacing="12">
                 <Button Text="Apply Colors"
-                      x:Name="ApplyColorsButton"
-                      Clicked="ApplyColorsButton_Clicked"/>
-                <Button Text="Save Theme" Command="{Binding SaveThemeCommand}" />
+                        Command="{Binding ApplyColorsCommand}"/>
+                <Button Text="Save Theme"
+                    Command="{Binding SaveThemeCommand}"/>
+                <Button Text="Delete Theme"
+                    Command="{Binding DeleteThemeCommand}"/>
               </HorizontalStackLayout>
 
-              
 
-              <expander:SfExpander HeaderIconPosition="None">
+              <expander:SfExpander HeaderIconPosition="None" IsExpanded="True">
                 <expander:SfExpander.Header>
                   <HorizontalStackLayout Spacing="8" Margin="8,12">
                     <Image x:Name="Caret" Source="{StaticResource IconCaretRight}" WidthRequest="24" HeightRequest="24" VerticalOptions="Center"/>
@@ -145,32 +165,46 @@
                 </expander:SfExpander.Header>
 
                 <expander:SfExpander.Content>
-                  <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="16" Padding="20,0"
-                      BindableLayout.ItemsSource="{Binding Themes}"
-                      >
-                      <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="Models:ColorTheme">
-                          <Grid ColumnDefinitions="Auto" RowDefinitions="Auto,100,Auto">
-                            <Grid.GestureRecognizers>
-                              <TapGestureRecognizer Command="{Binding LoadThemeCommand, Source={RelativeSource AncestorType={x:Type PageModels:MainPageModel}}, x:DataType=PageModels:MainPageModel}" CommandParameter="{Binding .}"/>
-                            </Grid.GestureRecognizers>
-                            <Label Text="{Binding Title}" Grid.Row="2" />
-                            <Border Stroke="{StaticResource Gray400}" StrokeThickness="1" Grid.Row="1">
-                              <Grid ColumnDefinitions="40,40,40,40" RowDefinitions="100">
-                                <BoxView Color="{Binding Primary}" Grid.Column="0" Grid.Row="0" />
-                                <BoxView Color="{Binding Secondary}" Grid.Column="1" Grid.Row="0" />
-                                <BoxView Color="{Binding Background}" Grid.Column="2" Grid.Row="0" />
-                                <BoxView Color="{Binding BackgroundDark}" Grid.Column="3" Grid.Row="0" />
-                                </Grid>
-                            </Border>
-                          </Grid>
-                        </DataTemplate>
-                      </BindableLayout.ItemTemplate>
-                      
-                    </HorizontalStackLayout>
-                  </ScrollView>
-                </expander:SfExpander.Content>
+              <CollectionView ItemsSource="{Binding Themes}">
+                <CollectionView.ItemsLayout>
+                  <LinearItemsLayout Orientation="Horizontal"
+                      ItemSpacing="12"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                  <DataTemplate x:DataType="Models:ColorTheme">
+                    <Grid ColumnDefinitions="Auto"
+                        RowDefinitions="Auto,100,Auto">
+                      <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadThemeCommand, Source={RelativeSource AncestorType={x:Type PageModels:MainPageModel}}, x:DataType=PageModels:MainPageModel}"
+                            CommandParameter="{Binding .}"/>
+                      </Grid.GestureRecognizers>
+                      <Label Text="{Binding Title}"
+                          Grid.Row="2"/>
+                      <Border Stroke="{StaticResource Gray400}"
+                          StrokeThickness="1"
+                          Grid.Row="1">
+                        <Grid ColumnDefinitions="40,40,40,40"
+                            RowDefinitions="100">
+                          <BoxView Color="{Binding Primary}"
+                              Grid.Column="0"
+                              Grid.Row="0"/>
+                          <BoxView Color="{Binding Secondary}"
+                              Grid.Column="1"
+                              Grid.Row="0"/>
+                          <BoxView Color="{Binding Background}"
+                              Grid.Column="2"
+                              Grid.Row="0"/>
+                          <BoxView Color="{Binding BackgroundDark}"
+                              Grid.Column="3"
+                              Grid.Row="0"/>
+                        </Grid>
+                      </Border>
+                    </Grid>
+                  </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+              </CollectionView>
+              </expander:SfExpander.Content>
 
                 <VisualStateManager.VisualStateGroups>
                       <VisualStateGroupList>
@@ -207,7 +241,7 @@
         <tabView:SfTabItem.Content>
           <ScrollView>
             <VerticalStackLayout Padding="20"
-                Spacing="24">
+                                 Spacing="24">
               <Button Text="Toggle Theme"
                       Clicked="ToggleThemeButton_Clicked"
                       Margin="0,24,0,0"/>
@@ -268,17 +302,17 @@
                      Style="{StaticResource SubHeadline}"/>
               <StackLayout Orientation="Horizontal"
                            Spacing="16">
-                <Border BackgroundColor="{DynamicResource Error}"
+                <Border Background="{DynamicResource Error}"
                         Padding="8">
                   <Label Text="Error"
                          TextColor="White"/>
                 </Border>
-                <Border BackgroundColor="{DynamicResource Success}"
+                <Border Background="{DynamicResource Success}"
                         Padding="8">
                   <Label Text="Success"
                          TextColor="White"/>
                 </Border>
-                <Border BackgroundColor="{DynamicResource Info}"
+                <Border Background="{DynamicResource Info}"
                         Padding="8">
                   <Label Text="Info"
                          TextColor="White"/>
@@ -511,7 +545,7 @@
                     <Label Text="Background"
                            HorizontalOptions="Center"
                            TextColor="{DynamicResource OnBackground}"/>
-                    <BoxView x:Name="BackgroundColorBox"
+                    <BoxView x:Name="BackgroundBox"
                              Grid.Row="1"
                              Color="{DynamicResource Background}"
                              HeightRequest="50"
@@ -533,7 +567,7 @@
                     <Label Text="OnBackground"
                            HorizontalOptions="Center"
                            TextColor="{DynamicResource OnBackground}"/>
-                    <BoxView x:Name="OnBackgroundColorBox"
+                    <BoxView x:Name="OnBackgroundBox"
                              Grid.Row="1"
                              Color="{DynamicResource OnBackground}"
                              HeightRequest="50"
@@ -577,17 +611,16 @@
         <tabView:SfTabItem.Content>
           <ScrollView>
             <VerticalStackLayout Padding="20"
-                Spacing="24">
+                                 Spacing="24">
 
               <!-- Generated Code Output -->
               <Label Text="Generate Theme Code"
                      Style="{StaticResource Headline}"/>
 
               <sf:SfTextInputLayout Hint="Code Format"
-                                    BackgroundColor="Transparent"
-                  Background="Transparent"
+                                    Background="Transparent"
                                     ContainerBackground="Transparent"
-                  ContainerType="Outlined">
+                                    ContainerType="Outlined">
                 <Picker x:Name="CodeFormatPicker">
                   <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
@@ -601,15 +634,14 @@
               </sf:SfTextInputLayout>
 
               <sf:SfTextInputLayout Hint="Include Styles"
-                  IsHintAlwaysFloated="True"
-                                    BackgroundColor="Transparent"
-                  Background="Transparent"
+                                    IsHintAlwaysFloated="True"
+                                    Background="Transparent"
                                     ContainerBackground="Transparent"
-                  ContainerType="Outlined">
+                                    ContainerType="Outlined">
 
                 <HorizontalStackLayout Spacing="16">
                   <CheckBox x:Name="IncludeStylesCheckBox"
-                            IsChecked="False"/>
+                            IsChecked="{Binding IncludeStyles}"/>
                   <Label Text="Include Styles (Styles and Layouts)"
                          VerticalOptions="Center"/>
                 </HorizontalStackLayout>
@@ -617,23 +649,24 @@
 
               <Button x:Name="GenerateXamlButton"
                       Text="Generate Code"
-                      Clicked="GenerateXamlButton_Clicked"/>
+                      Command="{Binding GenerateCodeCommand}"/>
               <Grid>
                 <Editor x:Name="ThemeXamlEditor"
                         HeightRequest="200"
                         IsReadOnly="True"
-                        BackgroundColor="{DynamicResource Surface0}"
+                        Text="{Binding GeneratedCode}"
+                        Background="{DynamicResource Surface0}"
                         TextColor="{DynamicResource OnBackground}"/>
                 <ImageButton x:Name="CopyButton"
                              Source="{StaticResource IconCopy}"
                              HorizontalOptions="End"
                              VerticalOptions="Start"
                              Margin="0,8,8,0"
-                             Clicked="CopyButton_Clicked"/>
+                             Command="{Binding CopyToClipboardCommand}"/>
               </Grid>
               <Button x:Name="SaveXamlButton"
                       Text="Save to File"
-                      Clicked="SaveXamlButton_Clicked"
+                      Command="{Binding SaveToFileCommand}"
                       IsEnabled="False"/>
 
             </VerticalStackLayout>

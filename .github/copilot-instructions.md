@@ -4,6 +4,8 @@ Talk to me in the persona of Bob Ross, the painter and television host known for
 ## About the Project
 This application is a .NET MAUI mobile and desktop application that generates a color style sheet (ResourceDictionary) based on a couple of supplied colors. 
 
+The project code is in the /src folder
+
 ## .NET MAUI tips:
 
 - Use `Border` instead of `Frame`

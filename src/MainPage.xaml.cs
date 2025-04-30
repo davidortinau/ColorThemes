@@ -1,5 +1,4 @@
-﻿using Theming;
-using System.Text;
+﻿using System.Text;
 using Path = System.IO.Path;
 using Scriban;
 using ColorThemes.Models;
@@ -22,7 +21,6 @@ public enum CodeGenerationFormat
 public partial class MainPage : ContentPage
 {
     private readonly MainPageModel _viewModel;
-    private ColorTheme? _currentTheme;
     
     public MainPage(MainPageModel viewModel)
     {
@@ -31,19 +29,18 @@ public partial class MainPage : ContentPage
         _viewModel = viewModel;
         BindingContext = _viewModel;
         
-        // Initialize the color format picker
-        CodeFormatPicker.ItemsSource = new List<string>
-        {
-            "AppThemeColor",
-            "AppThemeBinding",
-            "DynamicResource",
-            "MauiReactor"
-        };
-        CodeFormatPicker.SelectedIndex = 0;
+        // We don't need to initialize the CodeFormatPicker.ItemsSource here
+        // since it's now done in XAML with data binding
         
         // Add a handler to update the color hex values when the app theme changes
         if (Application.Current != null)
-            Application.Current.RequestedThemeChanged += (s, e) => UpdateColorSwatches();
+        {
+            Application.Current.RequestedThemeChanged += (s, e) => 
+            {
+                UpdateColorSwatches();
+                _viewModel.UpdateThemeName();
+            };
+        }
             
         UpdateColorSwatches();
     }
@@ -69,8 +66,8 @@ public partial class MainPage : ContentPage
         UpdateHexLabel(SuccessColorBox, SuccessHexLabel, "Success");
         UpdateHexLabel(InfoColorBox, InfoHexLabel, "Info");
         
-        UpdateHexLabel(BackgroundColorBox, BackgroundHexLabel, "Background");
-        UpdateHexLabel(OnBackgroundColorBox, OnBackgroundHexLabel, "OnBackground");
+        UpdateHexLabel(BackgroundBox, BackgroundHexLabel, "Background");
+        UpdateHexLabel(OnBackgroundBox, OnBackgroundHexLabel, "OnBackground");
         UpdateHexLabel(OnSurfaceColorBox, OnSurfaceHexLabel, "OnSurface");
     }
     
@@ -118,173 +115,7 @@ public partial class MainPage : ContentPage
         else
         {
             if (Application.Current != null)
-                Application.Current.UserAppTheme = AppTheme.Light;
-        }
+                Application.Current.UserAppTheme = AppTheme.Light;        }
     }    
     
-    private async void GenerateXamlButton_Clicked(object sender, EventArgs e)
-    {
-        if (Application.Current == null || Application.Current.Resources == null)
-            return;
-            
-        // Extract the current theme from the application resources
-        var resources = Application.Current.Resources;
-        if (resources.TryGetValue("Primary", out var primaryObj) && 
-            resources.TryGetValue("Secondary", out var secondaryObj) && 
-            resources.TryGetValue("Background", out var backgroundObj))
-        {
-            Color primary = (Color)primaryObj;
-            Color secondary = (Color)secondaryObj;
-            Color background = (Color)backgroundObj;
-            bool isDarkTheme = Application.Current.UserAppTheme == AppTheme.Dark;
-            
-            // Generate the theme
-            _currentTheme = ColorThemeGenerator.Generate(primary, secondary, background, isDarkTheme);
-
-            // Determine which format to use based on the selected radio button
-            CodeGenerationFormat format = GetSelectedCodeFormat();
-
-            string templateFileName = format switch
-            {
-                CodeGenerationFormat.AppThemeColor => "AppThemeColor.scriban-txt",
-                CodeGenerationFormat.AppThemeBinding => "AppThemeBinding.scriban-txt",
-                CodeGenerationFormat.DynamicResource => "DynamicResource.scriban-txt",
-                CodeGenerationFormat.MauiReactor => "MauiReactor.scriban-txt",
-                CodeGenerationFormat.CSharpMarkup => "CSharpMarkup.scriban-txt",
-                _ => throw new NotSupportedException($"The format {format} is not supported.")
-            };
-
-            // load and parse scriban template
-            var generatedCode = string.Empty;     
-            using Stream templateStream = await FileSystem.OpenAppPackageFileAsync(templateFileName);
-            using (StreamReader reader = new StreamReader(templateStream))
-            {
-                var template = Template.Parse(await reader.ReadToEndAsync() );
-                generatedCode = await template.RenderAsync(new
-                {
-                    primary = _currentTheme.Primary.ToArgbHex(),
-                    primary_dark = _currentTheme.PrimaryDark.ToArgbHex(),
-                    secondary = _currentTheme.Secondary.ToArgbHex(),
-                    secondary_dark = _currentTheme.SecondaryDark.ToArgbHex(),
-                    background = _currentTheme.Background.ToArgbHex(),
-                    background_dark = _currentTheme.BackgroundDark.ToArgbHex(),
-                    on_background = _currentTheme.OnBackground.ToArgbHex(),
-                    on_background_dark = _currentTheme.OnBackgroundDark.ToArgbHex(),
-                    surface_0 = _currentTheme.Surface0.ToArgbHex(),
-                    surface_0_dark = _currentTheme.Surface0Dark.ToArgbHex(),
-                    surface_1 = _currentTheme.Surface1.ToArgbHex(),
-                    surface_1_dark = _currentTheme.Surface1Dark.ToArgbHex(),
-                    surface_2 = _currentTheme.Surface2.ToArgbHex(),
-                    surface_2_dark = _currentTheme.Surface2Dark.ToArgbHex(),
-                    surface_3 = _currentTheme.Surface3.ToArgbHex(),
-                    surface_3_dark = _currentTheme.Surface3Dark.ToArgbHex(),
-                    include_styles = IncludeStylesCheckBox.IsChecked
-                }); 
-
-                // //Debug.WriteLine(prompt);
-            }
-                        
-            // Display in the editor
-            ThemeXamlEditor.Text = generatedCode;
-            
-            // Enable save button
-            SaveXamlButton.IsEnabled = true;
-        }
-    }
-
-    private async void SaveXamlButton_Clicked(object sender, EventArgs e)
-    {
-        if (string.IsNullOrEmpty(ThemeXamlEditor.Text))
-            return;
-
-        // Get the file extension based on the selected format
-        string fileExtension = GetSelectedCodeFormat() switch
-        {
-            CodeGenerationFormat.MauiReactor => ".cs",
-            CodeGenerationFormat.CSharpMarkup => ".cs",
-            _ => ".xaml"
-        };
-
-        string fileName = $"ThemeColors{fileExtension}";
-
-        try
-        {
-#if WINDOWS
-            // On Windows, use file picker
-            var fileSaver = new Windows.Storage.Pickers.FileSavePicker();
-            
-            if (fileExtension == ".xaml")
-            {
-                fileSaver.FileTypeChoices.Add("XAML Files", new List<string>() { ".xaml" });
-            }
-            else
-            {
-                fileSaver.FileTypeChoices.Add("C# Files", new List<string>() { ".cs" });
-            }
-            
-            fileSaver.SuggestedFileName = Path.GetFileNameWithoutExtension(fileName);
-            var file = await fileSaver.PickSaveFileAsync();
-            if (file != null)
-            {
-                await File.WriteAllTextAsync(file.Path, ThemeXamlEditor.Text);
-                await DisplayAlert("Success", "File saved successfully", "OK");
-            }
-#else
-            // On other platforms, use a predefined path
-            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string filePath = Path.Combine(documentsPath, fileName);
-
-            await File.WriteAllTextAsync(filePath, ThemeXamlEditor.Text);
-            await DisplayAlert("Success", $"File saved to {filePath}", "OK");
-#endif
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Error", $"Failed to save file: {ex.Message}", "OK");
-        }
-    }
-
-    private void ApplyColorsButton_Clicked(object sender, EventArgs e)
-    {
-        App.ApplyCurrentTheme(
-            PrimaryColorEntry.Text,
-            SecondaryColorEntry.Text,
-            LightBackgroundColorEntry.Text,
-            DarkBackgroundColorEntry.Text
-        );
-        
-        // Update color swatches to reflect the applied theme
-        UpdateColorSwatches();
-        
-        // Optionally, you can show a message indicating that the theme has been applied
-        DisplayAlert("Success", "Theme applied successfully", "OK");
-    }
-    
-    /// <summary>
-    /// Determines which code generation format is selected by the user
-    /// </summary>
-    /// <returns>The selected code generation format</returns>
-    private CodeGenerationFormat GetSelectedCodeFormat()
-    {
-        var selectedFormat = CodeFormatPicker.SelectedItem as string;
-        if(selectedFormat == "AppThemeColor")
-            return CodeGenerationFormat.AppThemeColor;
-        else if(selectedFormat == "AppThemeBinding")
-            return CodeGenerationFormat.AppThemeBinding;
-        else if(selectedFormat == "DynamicResource")
-            return CodeGenerationFormat.DynamicResource;
-        else if(selectedFormat == "MauiReactor")
-            return CodeGenerationFormat.MauiReactor;
-        else if(selectedFormat == "C# Markup (CommunityToolkit)")
-            return CodeGenerationFormat.CSharpMarkup;
-        
-        // Default option
-        return CodeGenerationFormat.AppThemeColor;
-    }
-
-    private async void CopyButton_Clicked(object sender, EventArgs e)
-    {
-        await Clipboard.Default.SetTextAsync(ThemeXamlEditor.Text);
-        await App.DisplayToastAsync("Copied to clipboard!");
-    }
 }

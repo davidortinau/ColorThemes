@@ -1,4 +1,7 @@
-﻿namespace ColorThemes;
+﻿using ColorThemes.PageModels;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace ColorThemes;
 
 public partial class AppShell : Shell
 {

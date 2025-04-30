@@ -52,62 +52,6 @@ public class ColorTheme
         SuccessDarkHex = "#66BB6A";
         InfoHex = "#0D47A1";
         InfoDarkHex = "#42A5F5";
-        BorderHex = "#BDBDBD";
-        BorderDarkHex = "#424242";
-        FocusOutlineHex = "#0078D4";
-        FocusOutlineDarkHex = "#2B88D8";
-        
-        // Initialize all Color properties with default values
-        // Light theme colors
-        Primary = Colors.Blue;
-        Secondary = Colors.Gray;
-        Background = Colors.White;
-        Surface0 = Colors.White;
-        Surface1 = Colors.White;
-        Surface2 = Colors.White;
-        Surface3 = Colors.White;
-        OnBackground = Colors.Black;
-        OnSurface = Colors.Black;
-        OnPrimary = Colors.White;
-        OnSecondary = Colors.White;
-        Error = Colors.Red;
-        Success = Colors.Green;
-        Info = Colors.Blue;
-        Border = Colors.Gray;
-        FocusOutline = Colors.Blue;
-        
-        // Dark theme colors
-        PrimaryDark = Colors.LightBlue;
-        SecondaryDark = Colors.DarkGray;
-        BackgroundDark = Colors.Black;
-        Surface0Dark = Color.FromArgb("#121212");
-        Surface1Dark = Color.FromArgb("#1E1E1E");
-        Surface2Dark = Color.FromArgb("#222222");
-        Surface3Dark = Color.FromArgb("#242424");
-        OnBackgroundDark = Colors.White;
-        OnSurfaceDark = Colors.White;
-        OnPrimaryDark = Colors.Black;
-        OnSecondaryDark = Colors.White;
-        ErrorDark = Color.FromArgb("#FF5252");
-        SuccessDark = Color.FromArgb("#69F0AE");
-        InfoDark = Color.FromArgb("#82B1FF");
-        BorderDark = Colors.DarkGray;
-        FocusOutlineDark = Colors.LightBlue;
-        
-        // Initialize hover, pressed and disabled states
-        PrimaryHover = Colors.Blue;
-        PrimaryHoverDark = Colors.LightBlue;
-        PrimaryPressed = Colors.Blue;
-        PrimaryPressedDark = Colors.LightBlue;
-        PrimaryDisabled = Colors.Gray;
-        PrimaryDisabledDark = Colors.DimGray;
-        
-        SecondaryHover = Colors.DarkGray;
-        SecondaryHoverDark = Colors.Silver;
-        SecondaryPressed = Colors.DimGray;
-        SecondaryPressedDark = Colors.LightGray;
-        SecondaryDisabled = Colors.LightGray;
-        SecondaryDisabledDark = Colors.Gray;
         
         // Now update colors from hex strings
         UpdateColorsFromHex();
@@ -133,9 +77,7 @@ public class ColorTheme
         Error = Color.FromArgb(ErrorHex);
         Success = Color.FromArgb(SuccessHex);
         Info = Color.FromArgb(InfoHex);
-        Border = Color.FromArgb(BorderHex);
-        FocusOutline = Color.FromArgb(FocusOutlineHex);
-
+        
         // Dark theme colors
         PrimaryDark = Color.FromArgb(PrimaryDarkHex);
         SecondaryDark = Color.FromArgb(SecondaryDarkHex);
@@ -151,27 +93,7 @@ public class ColorTheme
         ErrorDark = Color.FromArgb(ErrorDarkHex);
         SuccessDark = Color.FromArgb(SuccessDarkHex);
         InfoDark = Color.FromArgb(InfoDarkHex);
-        BorderDark = Color.FromArgb(BorderDarkHex);
-        FocusOutlineDark = Color.FromArgb(FocusOutlineDarkHex);
-        
-        // Set up hover, pressed and disabled states
-        PrimaryHover = Primary.WithLuminosity(Primary.GetLuminosity() + 0.05f);
-        PrimaryHoverDark = PrimaryDark.WithLuminosity(PrimaryDark.GetLuminosity() + 0.05f);
-        
-        PrimaryPressed = Primary.WithLuminosity(Primary.GetLuminosity() - 0.05f);
-        PrimaryPressedDark = PrimaryDark.WithLuminosity(PrimaryDark.GetLuminosity() - 0.05f);
-        
-        PrimaryDisabled = Primary.WithAlpha(0.5f);
-        PrimaryDisabledDark = PrimaryDark.WithAlpha(0.5f);
-        
-        SecondaryHover = Secondary.WithLuminosity(Secondary.GetLuminosity() + 0.05f);
-        SecondaryHoverDark = SecondaryDark.WithLuminosity(SecondaryDark.GetLuminosity() + 0.05f);
-        
-        SecondaryPressed = Secondary.WithLuminosity(Secondary.GetLuminosity() - 0.05f);
-        SecondaryPressedDark = SecondaryDark.WithLuminosity(SecondaryDark.GetLuminosity() - 0.05f);
-        
-        SecondaryDisabled = Secondary.WithAlpha(0.5f);
-        SecondaryDisabledDark = SecondaryDark.WithAlpha(0.5f);
+
     }
     
     /// <summary>
@@ -194,8 +116,6 @@ public class ColorTheme
         ErrorHex = Error.ToHex();
         SuccessHex = Success.ToHex();
         InfoHex = Info.ToHex();
-        BorderHex = Border.ToHex();
-        FocusOutlineHex = FocusOutline.ToHex();
         
         // Dark theme color hex strings
         PrimaryDarkHex = PrimaryDark.ToHex();
@@ -212,8 +132,6 @@ public class ColorTheme
         ErrorDarkHex = ErrorDark.ToHex();
         SuccessDarkHex = SuccessDark.ToHex();
         InfoDarkHex = InfoDark.ToHex();
-        BorderDarkHex = BorderDark.ToHex();
-        FocusOutlineDarkHex = FocusOutlineDark.ToHex();
     }
 
     // Light theme colors - Hex strings for serialization
@@ -231,8 +149,6 @@ public class ColorTheme
     public string ErrorHex { get; set; }
     public string SuccessHex { get; set; }
     public string InfoHex { get; set; }
-    public string BorderHex { get; set; }
-    public string FocusOutlineHex { get; set; }
 
     // Dark theme colors - Hex strings for serialization
     public string PrimaryDarkHex { get; set; }
@@ -249,8 +165,6 @@ public class ColorTheme
     public string ErrorDarkHex { get; set; }
     public string SuccessDarkHex { get; set; }
     public string InfoDarkHex { get; set; }
-    public string BorderDarkHex { get; set; }
-    public string FocusOutlineDarkHex { get; set; }
 
     // Title property
     public string Title { get; set; } = string.Empty;
@@ -269,21 +183,9 @@ public class ColorTheme
     [JsonIgnore]
     public Color Primary { get; set; }
     [JsonIgnore]
-    public Color PrimaryHover { get; set; }
-    [JsonIgnore]
-    public Color PrimaryPressed { get; set; }
-    [JsonIgnore]
-    public Color PrimaryDisabled { get; set; }
-    [JsonIgnore]
     public Color OnPrimary { get; set; }
     [JsonIgnore]
     public Color Secondary { get; set; }
-    [JsonIgnore]
-    public Color SecondaryHover { get; set; }
-    [JsonIgnore]
-    public Color SecondaryPressed { get; set; }
-    [JsonIgnore]
-    public Color SecondaryDisabled { get; set; }
     [JsonIgnore]
     public Color OnSecondary { get; set; }
     [JsonIgnore]
@@ -296,10 +198,7 @@ public class ColorTheme
     public Color OnBackground { get; set; }
     [JsonIgnore]
     public Color OnSurface { get; set; }
-    [JsonIgnore]
-    public Color Border { get; set; }
-    [JsonIgnore]
-    public Color FocusOutline { get; set; }
+    
 
     // Dark theme colors - Ignored during JSON serialization
     [JsonIgnore]
@@ -315,21 +214,9 @@ public class ColorTheme
     [JsonIgnore]
     public Color PrimaryDark { get; set; }
     [JsonIgnore]
-    public Color PrimaryHoverDark { get; set; }
-    [JsonIgnore]
-    public Color PrimaryPressedDark { get; set; }
-    [JsonIgnore]
-    public Color PrimaryDisabledDark { get; set; }
-    [JsonIgnore]
     public Color OnPrimaryDark { get; set; }
     [JsonIgnore]
     public Color SecondaryDark { get; set; }
-    [JsonIgnore]
-    public Color SecondaryHoverDark { get; set; }
-    [JsonIgnore]
-    public Color SecondaryPressedDark { get; set; }
-    [JsonIgnore]
-    public Color SecondaryDisabledDark { get; set; }
     [JsonIgnore]
     public Color OnSecondaryDark { get; set; }
     [JsonIgnore]
@@ -342,8 +229,5 @@ public class ColorTheme
     public Color OnBackgroundDark { get; set; }
     [JsonIgnore]
     public Color OnSurfaceDark { get; set; }
-    [JsonIgnore]
-    public Color BorderDark { get; set; }
-    [JsonIgnore]
-    public Color FocusOutlineDark { get; set; }
+    
 }

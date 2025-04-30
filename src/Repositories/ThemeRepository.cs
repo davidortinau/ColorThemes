@@ -40,7 +40,19 @@ public class ThemeRepository
     public async Task<ColorTheme?> GetThemeByTitleAsync(string title)
     {
         await EnsureInitializedAsync();
-        return _cachedThemes.FirstOrDefault(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+        if (string.IsNullOrWhiteSpace(title))
+            return null;
+            
+        // Use explicit loop to ensure proper comparison
+        foreach (var theme in _cachedThemes)
+        {
+            if (string.Equals(theme.Title, title, StringComparison.OrdinalIgnoreCase))
+            {
+                return theme;
+            }
+        }
+        
+        return null;
     }
 
     /// <summary>
@@ -52,10 +64,16 @@ public class ThemeRepository
     {
         await EnsureInitializedAsync();
 
-        // Check if a theme with the same title already exists
-        if (_cachedThemes.Any(t => t.Title.Equals(theme.Title, StringComparison.OrdinalIgnoreCase)))
-        {
+        if (theme == null || string.IsNullOrWhiteSpace(theme.Title))
             return false;
+
+        // Check if a theme with the same title already exists using explicit comparison
+        foreach (var existingTheme in _cachedThemes)
+        {
+            if (string.Equals(existingTheme.Title, theme.Title, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
         }
 
         _cachedThemes.Add(theme);
@@ -72,15 +90,26 @@ public class ThemeRepository
     {
         await EnsureInitializedAsync();
 
-        int index = _cachedThemes.FindIndex(t => t.Title.Equals(theme.Title, StringComparison.OrdinalIgnoreCase));
-        if (index == -1)
-        {
+        if (theme == null || string.IsNullOrWhiteSpace(theme.Title))
             return false;
+
+        // Find the index using an explicit loop with proper comparison
+        for (int i = 0; i < _cachedThemes.Count; i++)
+        {
+            if (string.Equals(_cachedThemes[i].Title, theme.Title, StringComparison.OrdinalIgnoreCase))
+            {
+                // Verify we found the right theme
+                System.Diagnostics.Debug.WriteLine($"Updating theme at index {i}: {_cachedThemes[i].Title} -> {theme.Title}");
+                
+                _cachedThemes[i] = theme;
+                await SaveThemesAsync();
+                return true;
+            }
         }
 
-        _cachedThemes[index] = theme;
-        await SaveThemesAsync();
-        return true;
+        // No matching theme found
+        System.Diagnostics.Debug.WriteLine($"No theme found with title: {theme.Title}");
+        return false;
     }
 
     /// <summary>
@@ -92,15 +121,39 @@ public class ThemeRepository
     {
         await EnsureInitializedAsync();
 
-        int index = _cachedThemes.FindIndex(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
-        if (index == -1)
-        {
+        if (string.IsNullOrWhiteSpace(title))
             return false;
+
+        // Find the index using an explicit loop with proper comparison
+        for (int i = 0; i < _cachedThemes.Count; i++)
+        {
+            if (string.Equals(_cachedThemes[i].Title, title, StringComparison.OrdinalIgnoreCase))
+            {
+                // Verify we found the right theme
+                System.Diagnostics.Debug.WriteLine($"Deleting theme at index {i}: {_cachedThemes[i].Title}");
+                
+                _cachedThemes.RemoveAt(i);
+                await SaveThemesAsync();
+                return true;
+            }
         }
 
-        _cachedThemes.RemoveAt(index);
-        await SaveThemesAsync();
-        return true;
+        // No matching theme found
+        System.Diagnostics.Debug.WriteLine($"No theme found with title: {title}");
+        return false;
+    }
+
+    /// <summary>
+    /// Debug helper to inspect the current themes in the repository
+    /// </summary>
+    public void DebugThemeCache()
+    {
+        System.Diagnostics.Debug.WriteLine($"Theme Cache Contents (Count: {_cachedThemes.Count}):");
+        for (int i = 0; i < _cachedThemes.Count; i++)
+        {
+            var theme = _cachedThemes[i];
+            System.Diagnostics.Debug.WriteLine($"  [{i}] Title: \"{theme.Title}\", Primary: {theme.PrimaryHex}, Secondary: {theme.SecondaryHex}");
+        }
     }
 
     /// <summary>
@@ -118,11 +171,25 @@ public class ThemeRepository
             if (File.Exists(_themesFilePath))
             {
                 string json = await File.ReadAllTextAsync(_themesFilePath);
-                var themes = JsonSerializer.Deserialize<List<ColorTheme>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var options = new JsonSerializerOptions { 
+                    PropertyNameCaseInsensitive = true,
+                    WriteIndented = true
+                };
+                
+                var themes = JsonSerializer.Deserialize<List<ColorTheme>>(json, options);
                 if (themes != null && themes.Count > 0)
                 {
                     _cachedThemes = themes;
                     _isInitialized = true;
+                    
+                    // Initialize the actual Color objects from hex strings
+                    foreach (var theme in _cachedThemes)
+                    {
+                        theme.UpdateColorsFromHex();
+                    }
+                    
+                    System.Diagnostics.Debug.WriteLine($"Loaded {_cachedThemes.Count} themes from storage");
+                    DebugThemeCache();
                     return;
                 }
             }
@@ -147,14 +214,30 @@ public class ThemeRepository
     {
         try
         {
+            System.Diagnostics.Debug.WriteLine("Seeding default themes...");
             using var stream = await FileSystem.OpenAppPackageFileAsync(_defaultThemesFilePath);
             using var reader = new StreamReader(stream);
             string json = await reader.ReadToEndAsync();
             
-            var themes = JsonSerializer.Deserialize<List<ColorTheme>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var options = new JsonSerializerOptions { 
+                PropertyNameCaseInsensitive = true,
+                WriteIndented = true
+            };
+            
+            var themes = JsonSerializer.Deserialize<List<ColorTheme>>(json, options);
             if (themes != null)
             {
                 _cachedThemes = themes;
+                
+                // Initialize the actual Color objects from hex strings
+                foreach (var theme in _cachedThemes)
+                {
+                    theme.UpdateColorsFromHex();
+                }
+                
+                System.Diagnostics.Debug.WriteLine($"Seeded {_cachedThemes.Count} default themes");
+                DebugThemeCache();
+                
                 await SaveThemesAsync();
             }
         }
@@ -173,11 +256,19 @@ public class ThemeRepository
     {
         try
         {
-            string json = JsonSerializer.Serialize(_cachedThemes, new JsonSerializerOptions 
+            // Make sure all hex values are up-to-date before serializing
+            foreach (var theme in _cachedThemes)
+            {
+                theme.UpdateHexFromColors();
+            }
+            
+            var options = new JsonSerializerOptions
             { 
                 WriteIndented = true,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            };
+            
+            string json = JsonSerializer.Serialize(_cachedThemes, options);
             
             // Ensure the directory exists
             string? directory = Path.GetDirectoryName(_themesFilePath);
@@ -187,6 +278,7 @@ public class ThemeRepository
             }
 
             await File.WriteAllTextAsync(_themesFilePath, json);
+            System.Diagnostics.Debug.WriteLine($"Saved {_cachedThemes.Count} themes to {_themesFilePath}");
         }
         catch (Exception ex)
         {

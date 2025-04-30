@@ -4,6 +4,7 @@ using Syncfusion.Maui.Toolkit.Hosting;
 using Fonts;
 using ColorThemes.Repositories;
 using ColorThemes.PageModels;
+using ColorThemes.Services;
 
 namespace ColorThemes;
 
@@ -25,6 +26,7 @@ public static class MauiProgram
 			
 		// Register services
 		builder.Services.AddSingleton<ThemeRepository>();
+		builder.Services.AddSingleton<ThemeService>();
 		builder.Services.AddTransient<MainPageModel>();
 		builder.Services.AddTransient<MainPage>();
 
