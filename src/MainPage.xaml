@@ -247,9 +247,9 @@
         <tabView:SfTabItem.Content>
           <ScrollView>
             <VerticalStackLayout Padding="20"
-                                 Spacing="24">
+                                 Spacing="24">              
               <Button Text="Toggle Theme"
-                      Clicked="ToggleThemeButton_Clicked"
+                      Command="{Binding ToggleThemeCommand}"
                       Margin="0,24,0,0"/>
 
               <!-- Code Generation Format Selection -->

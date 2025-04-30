@@ -91,31 +91,12 @@ public partial class MainPage : ContentPage
         {
             hexLabel.Text = "#??????";
         }
-    }
-
-    /// <summary>
+    }    /// <summary>
     /// Converts a Color to its hex representation
     /// </summary>
     private static string ColorToHex(Color color)
     {
         return $"#{(int)(color.Red * 255):X2}{(int)(color.Green * 255):X2}{(int)(color.Blue * 255):X2}";
     }
-
-    private void ToggleThemeButton_Clicked(object sender, EventArgs e)
-    {
-        // Get the current app theme
-        var currentTheme = Application.Current?.RequestedTheme ?? AppTheme.Light;
-
-        // Toggle the theme
-        if (currentTheme == AppTheme.Light)
-        {
-            if (Application.Current != null)
-                Application.Current.UserAppTheme = AppTheme.Dark;
-        }
-        else
-        {
-            if (Application.Current != null)
-                Application.Current.UserAppTheme = AppTheme.Light;        }
-    }    
     
 }

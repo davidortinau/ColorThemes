@@ -549,6 +549,31 @@ public partial class MainPageModel : ObservableObject
     }
 
     /// <summary>
+    /// Toggles between light and dark themes
+    /// </summary>
+    [RelayCommand]
+    private void ToggleTheme()
+    {
+        // Get the current app theme
+        var currentTheme = Application.Current?.RequestedTheme ?? AppTheme.Light;
+
+        // Toggle the theme
+        if (currentTheme == AppTheme.Light)
+        {
+            if (Application.Current != null)
+                Application.Current.UserAppTheme = AppTheme.Dark;
+        }
+        else
+        {
+            if (Application.Current != null)
+                Application.Current.UserAppTheme = AppTheme.Light;
+        }
+        
+        // Update theme details to reflect the new mode
+        UpdateCurrentThemeDetails();
+    }
+
+    /// <summary>
     /// Updates the current theme details with all hex values for both light and dark modes
     /// </summary>
     private void UpdateCurrentThemeDetails()
