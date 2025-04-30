@@ -10,6 +10,7 @@
              xmlns:PageModels="clr-namespace:ColorThemes.PageModels"
              x:DataType="PageModels:MainPageModel"
              x:Class="ColorThemes.MainPage"
+             Background="{DynamicResource Background}"
              Title="Color Theme Generator">
   <Shell.TitleView>
     <Grid ColumnDefinitions="*, Auto"
@@ -28,9 +29,10 @@
     </Grid>
   </Shell.TitleView>
 
-  <tabView:SfTabView x:Name="tabView">
+  <tabView:SfTabView x:Name="tabView" Background="{DynamicResource Background}">
+    
     <tabView:SfTabView.Items>
-      <tabView:SfTabItem Header="Configure">
+      <tabView:SfTabItem Header="Configure" TextColor="{DynamicResource OnBackground}">
         <tabView:SfTabItem.Content>
           <ScrollView>
             <VerticalStackLayout Padding="20"
@@ -243,7 +245,7 @@
         </tabView:SfTabItem.Content>
       </tabView:SfTabItem>
 
-      <tabView:SfTabItem Header="Preview">
+      <tabView:SfTabItem Header="Preview" TextColor="{DynamicResource OnBackground}">
         <tabView:SfTabItem.Content>
           <ScrollView>
             <VerticalStackLayout Padding="20"
@@ -613,7 +615,7 @@
         </tabView:SfTabItem.Content>
       </tabView:SfTabItem>
 
-      <tabView:SfTabItem Header="Generate Code">
+      <tabView:SfTabItem Header="Generate Code" TextColor="{DynamicResource OnBackground}">
         <tabView:SfTabItem.Content>
           <ScrollView>
             <VerticalStackLayout Padding="20"
@@ -627,6 +629,9 @@
                                     Background="Transparent"
                                     ContainerBackground="Transparent"
                                     ContainerType="Outlined">
+                <sf:SfTextInputLayout.HintLabelStyle>
+                  <sf:LabelStyle TextColor="{DynamicResource OnBackground}"/>
+                  </sf:SfTextInputLayout.HintLabelStyle>
                 <Picker x:Name="CodeFormatPicker" SelectedItem="{Binding SelectedCodeFormat}">
                   <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
@@ -644,6 +649,9 @@
                                     Background="Transparent"
                                     ContainerBackground="Transparent"
                                     ContainerType="Outlined">
+                                    <sf:SfTextInputLayout.HintLabelStyle>
+                  <sf:LabelStyle TextColor="{DynamicResource OnBackground}"/>
+                  </sf:SfTextInputLayout.HintLabelStyle>
 
                 <HorizontalStackLayout Spacing="16">
                   <CheckBox x:Name="IncludeStylesCheckBox"

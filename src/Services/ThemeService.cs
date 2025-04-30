@@ -101,7 +101,7 @@ public class ThemeService
             isDarkTheme: isDark);
 
         // Apply the theme
-        Application.Current?.Resources.ApplyTheme(theme);
+        Application.Current?.Resources.ApplyTheme(theme, isDark);
     }
 
     public void HandleAppThemeChanged()

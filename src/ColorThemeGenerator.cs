@@ -184,115 +184,28 @@ namespace ColorThemes
         /// Applies a generated theme into a ResourceDictionary for runtime theming in .NET MAUI.
         /// This method uses the CommunityToolkit.Maui's AppThemeColor to handle both light and dark themes.
         /// </summary>
-        public static void ApplyTheme(this ResourceDictionary resources, ColorTheme theme)
+        public static void ApplyTheme(this ResourceDictionary resources, ColorTheme theme, bool isDarkMode)
         {
-            // The AppThemeColor objects will be created dynamically at runtime
-            // We'll use reflection to create these objects since they're part of the CommunityToolkit.Maui
+                resources[nameof(theme.Primary)] = isDarkMode ? theme.PrimaryDark : theme.Primary;
+                resources[nameof(theme.OnPrimary)] = isDarkMode ? theme.OnPrimaryDark : theme.OnPrimary;
 
-            // AppThemeColor for Primary colors
-            var primaryType = Type.GetType("CommunityToolkit.Maui.Markup.AppThemeColorExtension, CommunityToolkit.Maui");
-            if (primaryType != null)
-            {
-                // Use dynamic AppThemeColor from the toolkit
-                ApplyAppThemeColor(resources, nameof(theme.Primary), theme.Primary, theme.PrimaryDark);
-                ApplyAppThemeColor(resources, nameof(theme.OnPrimary), theme.OnPrimary, theme.OnPrimaryDark);
+                resources[nameof(theme.Secondary)] = isDarkMode ? theme.SecondaryDark : theme.Secondary;
+                resources[nameof(theme.OnSecondary)] = isDarkMode ? theme.OnSecondaryDark : theme.OnSecondary;
 
-                ApplyAppThemeColor(resources, nameof(theme.Secondary), theme.Secondary, theme.SecondaryDark);
-                ApplyAppThemeColor(resources, nameof(theme.OnSecondary), theme.OnSecondary, theme.OnSecondaryDark);
+                resources[nameof(theme.Background)] = isDarkMode ? theme.BackgroundDark : theme.Background;
+                resources[nameof(theme.Surface0)] = isDarkMode ? theme.Surface0Dark : theme.Surface0;
+                resources[nameof(theme.Surface1)] = isDarkMode ? theme.Surface1Dark : theme.Surface1;
+                resources[nameof(theme.Surface2)] = isDarkMode ? theme.Surface2Dark : theme.Surface2;
+                resources[nameof(theme.Surface3)] = isDarkMode ? theme.Surface3Dark : theme.Surface3;
+                resources[nameof(theme.OnBackground)] = isDarkMode ? theme.OnBackgroundDark : theme.OnBackground;
+                resources[nameof(theme.OnSurface)] = isDarkMode ? theme.OnSurfaceDark : theme.OnSurface;
 
-                ApplyAppThemeColor(resources, nameof(theme.Background), theme.Background, theme.BackgroundDark);
-                ApplyAppThemeColor(resources, nameof(theme.Surface0), theme.Surface0, theme.Surface0Dark);
-                ApplyAppThemeColor(resources, nameof(theme.Surface1), theme.Surface1, theme.Surface1Dark);
-                ApplyAppThemeColor(resources, nameof(theme.Surface2), theme.Surface2, theme.Surface2Dark);
-                ApplyAppThemeColor(resources, nameof(theme.Surface3), theme.Surface3, theme.Surface3Dark);
-                ApplyAppThemeColor(resources, nameof(theme.OnBackground), theme.OnBackground, theme.OnBackgroundDark);
-                ApplyAppThemeColor(resources, nameof(theme.OnSurface), theme.OnSurface, theme.OnSurfaceDark);
-
-                ApplyAppThemeColor(resources, nameof(theme.Error), theme.Error, theme.ErrorDark);
-                ApplyAppThemeColor(resources, nameof(theme.Success), theme.Success, theme.SuccessDark);
-                ApplyAppThemeColor(resources, nameof(theme.Info), theme.Info, theme.InfoDark);
-            }
-            else
-            {
-                // Fallback to regular Colors if the AppThemeColor is not available
-                resources[nameof(theme.Primary)] = theme.Primary;
-                resources[nameof(theme.OnPrimary)] = theme.OnPrimary;
-
-                resources[nameof(theme.Secondary)] = theme.Secondary;
-                resources[nameof(theme.OnSecondary)] = theme.OnSecondary;
-
-                resources[nameof(theme.Background)] = theme.Background;
-                resources[nameof(theme.Surface0)] = theme.Surface0;
-                resources[nameof(theme.Surface1)] = theme.Surface1;
-                resources[nameof(theme.Surface2)] = theme.Surface2;
-                resources[nameof(theme.Surface3)] = theme.Surface3;
-                resources[nameof(theme.OnBackground)] = theme.OnBackground;
-                resources[nameof(theme.OnSurface)] = theme.OnSurface;
-
-                resources[nameof(theme.Error)] = theme.Error;
-                resources[nameof(theme.Success)] = theme.Success;
-                resources[nameof(theme.Info)] = theme.Info;
-            }
+                resources[nameof(theme.Error)] = isDarkMode ? theme.ErrorDark : theme.Error;
+                resources[nameof(theme.Success)] = isDarkMode ? theme.SuccessDark : theme.Success;
+                resources[nameof(theme.Info)] = isDarkMode ? theme.InfoDark : theme.Info;
         }
         
-        /// <summary>
-        /// Helper method to apply an AppThemeColor to the ResourceDictionary.
-        /// </summary>
-        private static void ApplyAppThemeColor(ResourceDictionary resources, string key, Color lightColor, Color darkColor)
-        {
-            // Create AppThemeColor directly instead of using reflection
-            var appThemeColorType = Type.GetType("CommunityToolkit.Maui.AppThemeColor, CommunityToolkit.Maui");
-            if (appThemeColorType != null)
-            {
-                var appThemeColor = Activator.CreateInstance(appThemeColorType);
-                
-                // Use reflection to set the Light and Dark properties
-                var lightProperty = appThemeColorType.GetProperty("Light");
-                var darkProperty = appThemeColorType.GetProperty("Dark");
-                
-                if (lightProperty != null && darkProperty != null)
-                {
-                    lightProperty.SetValue(appThemeColor, lightColor);
-                    darkProperty.SetValue(appThemeColor, darkColor);
-                    resources[key] = appThemeColor;
-                }
-                else
-                {
-                    // Fallback if properties not found
-                    resources[key] = lightColor;
-                }
-            }
-            else
-            {
-                // Fallback if type not found
-                resources[key] = lightColor;
-            }
-        }
-
-        /// <summary>
-        /// Helper method to append an AppThemeColor resource to the StringBuilder.
-        /// </summary>
-        private static void AppendAppThemeColorResource(StringBuilder sb, string name, Color lightColor, Color darkColor)
-        {
-            if (lightColor != Colors.Transparent || darkColor != Colors.Transparent)
-            {
-                string lightColorHex = ToHex(lightColor);
-                string darkColorHex = ToHex(darkColor);
-                sb.AppendLine($"    <toolkit:AppThemeColor x:Key=\"{name}\" Light=\"{lightColorHex}\" Dark=\"{darkColorHex}\" />");
-            }
-        }
         
-        /// <summary>
-        /// Helper method for backwards compatibility.
-        /// </summary>
-        private static void AppendColorResource(StringBuilder sb, string name, Color color)
-        {
-            if (color != Colors.Transparent)
-            {
-                string colorHex = ToHex(color);
-                sb.AppendLine($"    <Color x:Key=\"{name}\">{colorHex}</Color>");
-            }
-        }
 
         /// <summary>
         /// Extension method to determine if a color is dark based on luminance.
